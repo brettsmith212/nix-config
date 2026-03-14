@@ -27,6 +27,51 @@
   programs.zoxide.enable = true;
   programs.zoxide.enableZshIntegration = true;
 
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      format = "$directory$git_branch$git_status$golang$python$nodejs$rust$cmd_duration$line_break$character";
+      directory = {
+        style = "bold cyan";
+        truncation_length = 3;
+        truncation_symbol = "…/";
+      };
+      git_branch = {
+        style = "bold purple";
+        symbol = " ";
+      };
+      git_status = {
+        style = "bold red";
+      };
+      golang = {
+        symbol = " ";
+        style = "bold cyan";
+      };
+      python = {
+        symbol = " ";
+        style = "bold yellow";
+      };
+      nodejs = {
+        symbol = " ";
+        style = "bold green";
+      };
+      rust = {
+        symbol = " ";
+        style = "bold red";
+      };
+      cmd_duration = {
+        min_time = 2000;
+        style = "bold yellow";
+        show_milliseconds = false;
+      };
+      character = {
+        success_symbol = "[❯](bold green)";
+        error_symbol = "[❯](bold red)";
+      };
+    };
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
