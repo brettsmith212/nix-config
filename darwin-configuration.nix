@@ -36,6 +36,12 @@
     # Show battery percentage in menu bar
     controlcenter.BatteryShowPercentage = true;
 
+    # Show Bluetooth in menu bar (18 = show in menu bar)
+    controlcenter.Bluetooth = true;
+
+    # Show Sound/Volume in menu bar (18 = always show)
+    controlcenter.Sound = true;
+
     # Enable Cmd+1 through Cmd+5 for switching desktops
     # You must first create 5 desktops in Mission Control manually
     CustomUserPreferences = {
