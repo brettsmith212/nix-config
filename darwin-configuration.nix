@@ -43,6 +43,10 @@
       "com.apple.WindowManager" = {
         EnableStandardClickToShowDesktop = false;
       };
+      # Disable fn key opening emoji picker (0 = Do Nothing)
+      "com.apple.HIToolbox" = {
+        AppleFnUsageType = 0;
+      };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
           # Switch to Desktop 1: Cmd+1
