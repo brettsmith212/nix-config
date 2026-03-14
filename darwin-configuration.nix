@@ -15,6 +15,10 @@
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
 
+    brews = [
+      "dockutil"
+    ];
+
     casks = [
       "ghostty"
       "obsidian"
@@ -30,6 +34,9 @@
   system.defaults = {
     # Disable auto-rearrange Spaces based on most recent use
     dock.mru-spaces = false;
+
+    # Disable show suggested and recent apps in Dock
+    dock.show-recents = false;
 
     # Reduce motion (instant desktop transitions)
     universalaccess.reduceMotion = true;
@@ -104,6 +111,15 @@
   # Apply settings without requiring logout
   system.activationScripts.postActivation.text = ''
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+
+    # Configure Dock apps (must run as user, not root)
+    sudo -u brettsmith /opt/homebrew/bin/dockutil --remove all --no-restart
+    sudo -u brettsmith /opt/homebrew/bin/dockutil --add /System/Applications/Apps.app --no-restart
+    sudo -u brettsmith /opt/homebrew/bin/dockutil --add /System/Applications/Calendar.app --no-restart
+    sudo -u brettsmith /opt/homebrew/bin/dockutil --add /System/Applications/Messages.app --no-restart
+    sudo -u brettsmith /opt/homebrew/bin/dockutil --add "/Applications/Google Chrome.app" --no-restart
+    sudo -u brettsmith /opt/homebrew/bin/dockutil --add /Applications/Ghostty.app --no-restart
+    sudo -u brettsmith /opt/homebrew/bin/dockutil --add /Applications/Obsidian.app
   '';
 
   system.stateVersion = 5;
