@@ -39,6 +39,10 @@
     # Enable Cmd+1 through Cmd+5 for switching desktops
     # You must first create 5 desktops in Mission Control manually
     CustomUserPreferences = {
+      # Click wallpaper to show desktop: Only in Stage Manager
+      "com.apple.WindowManager" = {
+        EnableStandardClickToShowDesktop = false;
+      };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
           # Switch to Desktop 1: Cmd+1
