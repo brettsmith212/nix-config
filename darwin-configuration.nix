@@ -22,6 +22,7 @@
     casks = [
       "ghostty"
       "obsidian"
+      "zoom"
     ];
   };
 
