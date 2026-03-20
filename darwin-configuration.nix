@@ -118,7 +118,7 @@
     sudo -u brettsmith /opt/homebrew/bin/dockutil --add /System/Applications/Apps.app --no-restart
     sudo -u brettsmith /opt/homebrew/bin/dockutil --add /System/Applications/Calendar.app --no-restart
     sudo -u brettsmith /opt/homebrew/bin/dockutil --add /System/Applications/Messages.app --no-restart
-    sudo -u brettsmith /opt/homebrew/bin/dockutil --add "/Applications/Google Chrome.app" --no-restart
+    sudo -u brettsmith /opt/homebrew/bin/dockutil --add /Applications/Safari.app --no-restart
     sudo -u brettsmith /opt/homebrew/bin/dockutil --add /Applications/Ghostty.app --no-restart
     sudo -u brettsmith /opt/homebrew/bin/dockutil --add /Applications/Obsidian.app
   '';
