@@ -9,8 +9,10 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }: {
-    darwinConfigurations."Bretts-MacBook" = nix-darwin.lib.darwinSystem {
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }: let
+    hostname = "Bretts-MacBook"; # Set to output of: scutil --get LocalHostName
+  in {
+    darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
         ./darwin-configuration.nix
