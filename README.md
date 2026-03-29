@@ -55,7 +55,7 @@ sudo nix run nix-darwin -- switch --flake ~/.config/nix-config
 - **Create 5 desktops** in Mission Control for the Cmd+1 through Cmd+5 keyboard shortcuts to work.
 - **Install global npm tools:**
   ```sh
-  npm install -g @anthropic-ai/claude-code @sourcegraph/amp
+  curl -fsSL https://ampcode.com/install.sh | bash
   ```
 
 ### 8. Install tailscale
