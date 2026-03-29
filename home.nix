@@ -78,7 +78,12 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
-    # Changed from initExtra to initContent or just envExtra
+    initContent = ''
+      if [[ -n "$SSH_CONNECTION" ]]; then
+        _zsh_autosuggest_disable
+      fi
+    '';
+
     envExtra = ''
       export PATH="$HOME/.local/bin:$PATH"
     '';
