@@ -47,7 +47,7 @@ Then edit `flake.nix` and set `hostname = "YourHostnameHere";`.
 ### 6. Apply the Configuration
 
 ```sh
-sudo darwin-rebuild switch --flake ~/.config/nix-config
+sudo nix run nix-darwin -- switch --flake ~/.config/nix-config
 ```
 
 ### 7. Post-Setup (Manual Steps)
@@ -57,6 +57,10 @@ sudo darwin-rebuild switch --flake ~/.config/nix-config
   ```sh
   npm install -g @anthropic-ai/claude-code @sourcegraph/amp
   ```
+
+### 8. Install tailscale
+
+[Tailscale MacOS Package](https://pkgs.tailscale.com/stable/#macos)
 
 ## Apply Changes
 
