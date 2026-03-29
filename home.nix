@@ -32,7 +32,7 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-      format = "$directory$git_branch$git_status$golang$python$nodejs$rust$cmd_duration$line_break$character";
+      format = "$username$hostname$directory$git_branch$git_status$golang$python$nodejs$rust$cmd_duration$line_break$character";
       directory = {
         style = "bold cyan";
         truncation_length = 3;
@@ -65,6 +65,16 @@
         min_time = 2000;
         style = "bold yellow";
         show_milliseconds = false;
+      };
+      username = {
+        show_always = false;
+        style_user = "bold yellow";
+        format = "[$user]($style)@";
+      };
+      hostname = {
+        ssh_only = true;
+        style = "bold yellow";
+        format = "[$hostname]($style) ";
       };
       character = {
         success_symbol = "[❯](bold green)";
