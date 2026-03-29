@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   home.username = "brettsmith";
   home.homeDirectory = "/Users/brettsmith";
+  home.sessionPath = [ "/opt/homebrew/bin" ];
 
   home.packages = with pkgs; [
     # Dev Languages
