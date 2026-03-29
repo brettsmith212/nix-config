@@ -1,5 +1,7 @@
 vim.opt.relativenumber = false
 
+vim.opt.clipboard = "unnamedplus"
+
 if os.getenv("SSH_CONNECTION") then
   vim.g.clipboard = {
     name = "OSC 52",
