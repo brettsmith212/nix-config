@@ -109,9 +109,18 @@
     };
   };
 
-  # Apply settings without requiring logout
+  # Power management (system sleep 5 min after display sleep)
+  # Battery: display sleep 5 min, system sleep 10 min
+  # AC: display sleep 10 min, system sleep 15 min
+  # These take effect immediately after activation — no logout required
   system.activationScripts.postActivation.text = ''
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+
+    # Battery sleep settings
+    pmset -b displaysleep 5 sleep 10
+
+    # AC sleep settings
+    pmset -c displaysleep 10 sleep 15
 
     # Configure Dock apps (must run as user, not root)
     sudo -u brettsmith /opt/homebrew/bin/dockutil --remove all --no-restart
