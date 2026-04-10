@@ -62,6 +62,10 @@
       "com.apple.HIToolbox" = {
         AppleFnUsageType = 0;
       };
+      # Show full website address in Safari Smart Search field
+      "com.apple.Safari" = {
+        ShowFullURLInSmartSearchField = true;
+      };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
           # Switch to Desktop 1: Cmd+1
