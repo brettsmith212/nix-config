@@ -107,6 +107,16 @@
     };
   };
 
+  home.file.".claude/skills" = {
+    source = ./claude/skills;
+    recursive = true;
+  };
+
+  home.file.".amp/skills" = {
+    source = ./claude/skills;
+    recursive = true;
+  };
+
   xdg.configFile."nvim" = {
     source = ./nvim;
     recursive = true;
