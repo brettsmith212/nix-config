@@ -100,6 +100,7 @@
     '';
 
     shellAliases = {
+      cc = "claude";
       ll = "eza -l --icons";
       update = "sudo darwin-rebuild switch --flake ~/.config/nix-config";
     };
