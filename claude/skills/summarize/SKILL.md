@@ -211,7 +211,7 @@ for block in doc['blocks']:
 - The goal is that someone reading the summary should understand what each chapter argues, not just what the book is "about" at a high level
 
 **Output structure for books:**
-- Location: `08 Summaries/<Book Title>.md` (or `08 Summaries/<Author>/<Book Title>.md` if summarizing multiple books by one author)
+- Location: `08 Summaries/YYYY-MM-DD <Book Title>.md` (or `08 Summaries/<Author>/YYYY-MM-DD <Book Title>.md` if summarizing multiple books by one author)
 - Frontmatter tag: `book`
 - Extra fields: `creator` (author wikilink), `published` (year), `isbn` (if known), `source` (wikilink to the epub file if it's in the vault, e.g. `"[[Book Title.epub]]"`)
 - Each chapter gets its own `## Chapter N: Title` section in the summary
@@ -232,12 +232,12 @@ Based on content type, choose the appropriate format:
 
 | Content type | Location | Frontmatter tags | Extra fields |
 |---|---|---|---|
-| YouTube video | `08 Summaries/<Channel>/Summaries/<Title>.md` | `youtube` | `recording`, `views`, `creator`, `people`, `guest`, `hosts`, `guests`, `duration`, `uploaded` |
-| Article / blog | `08 Summaries/<Title>.md` | `article` | `creator`, `source` (URL), `published` |
-| Whitepaper / PDF | `08 Summaries/<Title>.md` | `paper` | `authors`, `affiliations`, `source` (wikilink to PDF if in vault, or URL), `published` |
-| EPUB / book | `08 Summaries/<Title>.md` | `book` | `creator` (author wikilink), `published` (year), `isbn`, `source` (wikilink to epub if in vault) |
-| Podcast episode | `08 Summaries/<Show>/Summaries/<Title>.md` | `podcast` | `recording`, `people`, `guest`, `hosts`, `guests`, `duration` |
-| Lecture / talk | `08 Summaries/<Title>.md` | `lecture` | `creator`, `recording` (if URL) |
+| YouTube video | `08 Summaries/<Channel>/Summaries/YYYY-MM-DD <Title>.md` | `youtube` | `recording`, `views`, `creator`, `people`, `guest`, `hosts`, `guests`, `duration`, `uploaded` |
+| Article / blog | `08 Summaries/YYYY-MM-DD <Title>.md` | `article` | `creator`, `source` (URL), `published` |
+| Whitepaper / PDF | `08 Summaries/YYYY-MM-DD <Title>.md` | `paper` | `authors`, `affiliations`, `source` (wikilink to PDF if in vault, or URL), `published` |
+| EPUB / book | `08 Summaries/YYYY-MM-DD <Title>.md` | `book` | `creator` (author wikilink), `published` (year), `isbn`, `source` (wikilink to epub if in vault) |
+| Podcast episode | `08 Summaries/<Show>/Summaries/YYYY-MM-DD <Title>.md` | `podcast` | `recording`, `people`, `guest`, `hosts`, `guests`, `duration` |
+| Lecture / talk | `08 Summaries/YYYY-MM-DD <Title>.md` | `lecture` | `creator`, `recording` (if URL) |
 
 **All notes** get: `created`, `updated`, `date`, `summary`, `categories: ["[[posts.base]]"]`, `unread: true`
 
