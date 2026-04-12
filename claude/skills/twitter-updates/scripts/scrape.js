@@ -5,7 +5,8 @@ const fs = require("fs");
 const PROFILE_DIR = path.join(process.env.HOME, ".x-feed-profile");
 const SCROLL_COUNT = parseInt(process.env.SCROLL_COUNT || "10", 10);
 const SCROLL_DELAY = 2000;
-const HEADLESS = process.env.HEADLESS === "1" || process.env.HEADLESS === "true";
+const HEADED = process.env.HEADED === "1" || process.env.HEADED === "true";
+const HEADLESS = !HEADED;
 
 const TARGETS = [
   {

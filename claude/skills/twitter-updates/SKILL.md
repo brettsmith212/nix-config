@@ -31,7 +31,7 @@ Scrapes X (Twitter) home feed and curated lists using Playwright with a persiste
 VAULT_ROOT     = $VAULT_ROOT        # auto-detected from workspace
 UPDATES_DIR    = 01 Updates
 SCROLL_COUNT   = 10                 # scrolls per target (env override: SCROLL_COUNT)
-HEADLESS       = 1                  # env var: run headless (no GUI needed)
+HEADED         = 0                  # set to 1 only for first-time login (headless by default)
 ```
 
 ### Scrape targets
@@ -51,44 +51,37 @@ When the user asks to check Twitter/X, get feed updates, see what's trending in 
 
 ## Step 1: Run the scraper
 
-The agent runs the scraper directly in headless mode. A saved browser session at `~/.x-feed-profile/` is required (the user must have logged in at least once before).
+The scraper runs **headless by default** — no env var needed. Only set `HEADED=1` when a browser window is needed for login.
 
-### Setup (if Playwright is not installed)
+First, check if `~/.x-feed-profile/Default` exists and if Playwright is installed.
 
-If `playwright` is not found, install it to a temp working directory:
+**Decision tree:**
 
-```bash
-mkdir -p /tmp/x-scraper
-cp <skill_dir>/scripts/scrape.js /tmp/x-scraper/
-cd /tmp/x-scraper && npm init -y && npm install playwright
-npx playwright install chromium
-```
+1. **Playwright not installed?** → Install it first:
+   ```bash
+   mkdir -p /tmp/x-scraper
+   cp <skill_dir>/scripts/scrape.js /tmp/x-scraper/
+   cd /tmp/x-scraper && npm init -y && npm install playwright
+   npx playwright install chromium
+   ```
+   Then run from `/tmp/x-scraper/` instead of `<skill_dir>/scripts/`.
 
-Then run the scraper from `/tmp/x-scraper/` instead of `<skill_dir>/scripts/`.
+2. **Session exists** (`~/.x-feed-profile/Default` exists) → **Just run it:**
+   ```bash
+   node <skill_dir>/scripts/scrape.js
+   ```
+   Or if using the temp install:
+   ```bash
+   cd /tmp/x-scraper && node scrape.js
+   ```
 
-### Running the scraper
-
-```bash
-HEADLESS=1 node <skill_dir>/scripts/scrape.js
-```
-
-Or if using the temp install:
-
-```bash
-cd /tmp/x-scraper && HEADLESS=1 node scrape.js
-```
+3. **Session does NOT exist** (`~/.x-feed-profile/Default` missing) → **Do NOT run the scraper yourself.** Tell the user to run it manually with `HEADED=1` so the browser opens for login:
+   ```bash
+   HEADED=1 node <skill_dir>/scripts/scrape.js
+   ```
+   After they log in and the scrape completes, future runs are headless by default.
 
 The script scrapes all configured targets sequentially and outputs JSON files to `/tmp/`.
-
-### First-time login (session not found)
-
-If `~/.x-feed-profile/Default` does not exist, the user has never logged in. In this case, tell the user to run the scraper manually **without** `HEADLESS=1` so the browser window opens for login:
-
-```bash
-node <skill_dir>/scripts/scrape.js
-```
-
-After they log in and the scrape completes, future runs can be headless.
 
 ## Step 2: Read and filter raw data
 
@@ -210,7 +203,7 @@ unread: true
 ## Key rules
 
 1. **Always run the scraper first** — never generate updates from stale data
-2. **Agent runs the scraper headless** — using `HEADLESS=1`. Only ask the user to run manually for first-time login
+2. **Scraper is headless by default** — just run `node scrape.js`. Only tell the user to run with `HEADED=1` for first-time login
 3. **Install Playwright if missing** — use `/tmp/x-scraper/` as a temp working directory
 4. **Filter aggressively** — only tech/AI/startup/software content passes
 5. **Tweet embeds only** — no redundant @handle lines or blockquoted tweet text
