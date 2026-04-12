@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   home.username = "brettsmith";
   home.homeDirectory = "/Users/brettsmith";
   home.sessionPath = [ "/opt/homebrew/bin" ];
@@ -107,15 +107,12 @@
     };
   };
 
-  home.file.".claude/skills" = {
-    source = ./claude/skills;
-    recursive = true;
-  };
-
-  home.file.".amp/skills" = {
-    source = ./claude/skills;
-    recursive = true;
-  };
+  home.activation.linkSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.claude"
+    mkdir -p "$HOME/.amp"
+    ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.claude/skills"
+    ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.amp/skills"
+  '';
 
   xdg.configFile."nvim" = {
     source = ./nvim;

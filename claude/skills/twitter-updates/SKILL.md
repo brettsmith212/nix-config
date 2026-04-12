@@ -23,7 +23,7 @@ Scrapes X (Twitter) home feed and curated lists using Playwright with a persiste
 | `node` | Runtime for scraper | `brew install node` |
 | `playwright` | Browser automation | Installed in `scripts/node_modules` |
 
-**Browser session** — stored at `~/.x-feed-profile/`. On first run, Playwright opens a Chromium window for the user to log into X. Session persists for weeks/months.
+**Browser session** — stored at `~/.x-feed-profile/`. On first run, the user must log into X in a headed browser window. Session persists for weeks/months and is reused for headless runs.
 
 ## Configuration
 
@@ -31,6 +31,7 @@ Scrapes X (Twitter) home feed and curated lists using Playwright with a persiste
 VAULT_ROOT     = $VAULT_ROOT        # auto-detected from workspace
 UPDATES_DIR    = 01 Updates
 SCROLL_COUNT   = 10                 # scrolls per target (env override: SCROLL_COUNT)
+HEADLESS       = 1                  # env var: run headless (no GUI needed)
 ```
 
 ### Scrape targets
@@ -50,17 +51,44 @@ When the user asks to check Twitter/X, get feed updates, see what's trending in 
 
 ## Step 1: Run the scraper
 
-The scraper is interactive (opens a browser window) and must be run by the user in their terminal:
+The agent runs the scraper directly in headless mode. A saved browser session at `~/.x-feed-profile/` is required (the user must have logged in at least once before).
+
+### Setup (if Playwright is not installed)
+
+If `playwright` is not found, install it to a temp working directory:
+
+```bash
+mkdir -p /tmp/x-scraper
+cp <skill_dir>/scripts/scrape.js /tmp/x-scraper/
+cd /tmp/x-scraper && npm init -y && npm install playwright
+npx playwright install chromium
+```
+
+Then run the scraper from `/tmp/x-scraper/` instead of `<skill_dir>/scripts/`.
+
+### Running the scraper
+
+```bash
+HEADLESS=1 node <skill_dir>/scripts/scrape.js
+```
+
+Or if using the temp install:
+
+```bash
+cd /tmp/x-scraper && HEADLESS=1 node scrape.js
+```
+
+The script scrapes all configured targets sequentially and outputs JSON files to `/tmp/`.
+
+### First-time login (session not found)
+
+If `~/.x-feed-profile/Default` does not exist, the user has never logged in. In this case, tell the user to run the scraper manually **without** `HEADLESS=1` so the browser window opens for login:
 
 ```bash
 node <skill_dir>/scripts/scrape.js
 ```
 
-Tell the user to run this command. On first run, they log into X in the browser window and press Enter. On subsequent runs, it reuses the saved session automatically.
-
-The script scrapes all configured targets sequentially and outputs JSON files to `/tmp/`.
-
-**Wait for the user to confirm the scrape is complete before proceeding.**
+After they log in and the scrape completes, future runs can be headless.
 
 ## Step 2: Read and filter raw data
 
@@ -182,9 +210,10 @@ unread: true
 ## Key rules
 
 1. **Always run the scraper first** — never generate updates from stale data
-2. **User runs the scraper** — it's interactive (browser window), agent cannot run it
-3. **Filter aggressively** — only tech/AI/startup/software content passes
-4. **Tweet embeds only** — no redundant @handle lines or blockquoted tweet text
-5. **One note per target** — separate files for feed vs. lists
-6. **Date-prefixed filenames** — `YYYY-MM-DD - X <Target>.md` for chronological sorting
-7. **Set `unread: true`** on every note created
+2. **Agent runs the scraper headless** — using `HEADLESS=1`. Only ask the user to run manually for first-time login
+3. **Install Playwright if missing** — use `/tmp/x-scraper/` as a temp working directory
+4. **Filter aggressively** — only tech/AI/startup/software content passes
+5. **Tweet embeds only** — no redundant @handle lines or blockquoted tweet text
+6. **One note per target** — separate files for feed vs. lists
+7. **Date-prefixed filenames** — `YYYY-MM-DD - X <Target>.md` for chronological sorting
+8. **Set `unread: true`** on every note created

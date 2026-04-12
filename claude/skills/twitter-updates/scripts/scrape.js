@@ -5,6 +5,7 @@ const fs = require("fs");
 const PROFILE_DIR = path.join(process.env.HOME, ".x-feed-profile");
 const SCROLL_COUNT = parseInt(process.env.SCROLL_COUNT || "10", 10);
 const SCROLL_DELAY = 2000;
+const HEADLESS = process.env.HEADLESS === "1" || process.env.HEADLESS === "true";
 
 const TARGETS = [
   {
@@ -104,7 +105,7 @@ async function scrapePage(page, target) {
   }
 
   const context = await chromium.launchPersistentContext(PROFILE_DIR, {
-    headless: false,
+    headless: HEADLESS,
     viewport: { width: 1280, height: 900 },
     args: ["--disable-blink-features=AutomationControlled"],
   });
