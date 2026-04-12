@@ -226,49 +226,18 @@ For plain text: read directly.
 ### Pasted text / vault note
 Read directly from user message or vault path.
 
-## Step 1b: Save transcript (audio/video content only)
-
-For any content that has audio — YouTube videos, podcast episodes, lectures/talks with recordings — save the extracted transcript as a permanent vault note.
-
-**When to create a transcript note:**
-- YouTube videos (from auto-subs or whisper transcription)
-- Podcast episodes (from transcription)
-- Lectures/talks with audio/video recordings
-- Any content where the source is spoken word
-
-**Do NOT create transcript notes for:** articles, blog posts, PDFs, books, pasted text — these are already text.
-
-**Location:** Same folder as the summary note, with ` Transcript` appended to the filename.
-
-**Format:**
-```markdown
----
-date: YYYY-MM-DD
-duration: <seconds>
-recording: "<source URL>"
-meeting: "[[<Summary Note Title>]]"
-unread: true
----
-
-[Full timestamped transcript text, one line per segment]
-```
-
-**Link from summary:** Add `transcript: "[[<Title> Transcript]]"` to the summary note's frontmatter.
-
-This step happens immediately after text extraction (Step 1) and before output structure planning (Step 2). The transcript is the raw source material — always preserve it.
-
 ## Step 2: Determine output structure
 
 Based on content type, choose the appropriate format:
 
 | Content type | Location | Frontmatter tags | Extra fields |
 |---|---|---|---|
-| YouTube video | `08 Summaries/<Channel>/Summaries/<Title>.md` | `youtube` | `recording`, `views`, `creator`, `people`, `guest`, `hosts`, `guests`, `duration`, `uploaded`, `transcript` |
+| YouTube video | `08 Summaries/<Channel>/Summaries/<Title>.md` | `youtube` | `recording`, `views`, `creator`, `people`, `guest`, `hosts`, `guests`, `duration`, `uploaded` |
 | Article / blog | `08 Summaries/<Title>.md` | `article` | `creator`, `source` (URL), `published` |
 | Whitepaper / PDF | `08 Summaries/<Title>.md` | `paper` | `authors`, `affiliations`, `source` (wikilink to PDF if in vault, or URL), `published` |
 | EPUB / book | `08 Summaries/<Title>.md` | `book` | `creator` (author wikilink), `published` (year), `isbn`, `source` (wikilink to epub if in vault) |
-| Podcast episode | `08 Summaries/<Show>/Summaries/<Title>.md` | `podcast` | `recording`, `people`, `guest`, `hosts`, `guests`, `duration`, `transcript` |
-| Lecture / talk | `08 Summaries/<Title>.md` | `lecture` | `creator`, `recording` (if URL), `transcript` |
+| Podcast episode | `08 Summaries/<Show>/Summaries/<Title>.md` | `podcast` | `recording`, `people`, `guest`, `hosts`, `guests`, `duration` |
+| Lecture / talk | `08 Summaries/<Title>.md` | `lecture` | `creator`, `recording` (if URL) |
 
 **All notes** get: `created`, `updated`, `date`, `summary`, `categories: ["[[posts.base]]"]`, `unread: true`
 
