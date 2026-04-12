@@ -1,0 +1,58 @@
+{
+  "startupTypes": ["SaaS", "Ecommerce", "AI", "Digital"],
+
+  "askingPriceMin": "0",
+  "askingPriceMax": "10000",
+
+  "revenueMultipleMin": "1",
+  "revenueMultipleMax": "7",
+
+  "profitMultipleMin": "1",
+  "profitMultipleMax": "5",
+
+  "ttmRevenueMin": "1",
+  "ttmRevenueMax": "1000000",
+
+  "ttmProfitMin": "1",
+  "ttmProfitMax": "200000",
+
+  "interests": [
+    "TypeScript",
+    "Python",
+    "JavaScript",
+    "Node.js",
+    "PostgreSQL",
+    "Business-to-business (B2B)",
+    "Business-to-consumer (B2C)",
+    "Direct-to-consumers (DTC)",
+    "Ecommerce",
+    "Productivity",
+    "Artificial Intelligence",
+    "Subscription",
+    "Freemium",
+    "Education & Training",
+    "Business Intelligence & Analytics",
+    "Accounting & Finance",
+    "Open-Source",
+    "Services",
+    "Real Estate",
+    "Transportation"
+  ],
+
+  "countries": ["United States"],
+
+  "highlights": [],
+
+  "arrMin": "",
+  "arrMax": "",
+
+  "growthRateMin": "",
+  "growthRateMax": "",
+
+  "startupAgeMin": "0",
+  "startupAgeMax": "9",
+
+  "numberOfCustomers": ["All"],
+
+  "criteriaMode": "Flexible"
+}

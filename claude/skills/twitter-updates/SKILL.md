@@ -1,6 +1,6 @@
 ---
 name: twitter-updates
-description: "Scrape X (Twitter) home feed and lists, filter for tech/AI/startup/software content, and produce formatted Obsidian update notes in 01 Updates/. Use when asked to check Twitter, get X feed updates, or summarize what's happening on X/Twitter."
+description: "Scrape X (Twitter) home feed and lists, filter for tech/AI/startup/software content, and produce formatted Obsidian update notes in 01 Updates/Twitter/. Use when asked to check Twitter, get X feed updates, or summarize what's happening on X/Twitter."
 user_invocable: true
 ---
 
@@ -14,7 +14,7 @@ Scrapes X (Twitter) home feed and curated lists using Playwright with a persiste
 
 | Folder | Purpose |
 |---|---|
-| `01 Updates/` | Where feed update notes land |
+| `01 Updates/Twitter/` | Where feed update notes land |
 
 **CLI tools:**
 
@@ -29,7 +29,7 @@ Scrapes X (Twitter) home feed and curated lists using Playwright with a persiste
 
 ```
 VAULT_ROOT     = $VAULT_ROOT        # auto-detected from workspace
-UPDATES_DIR    = 01 Updates
+UPDATES_DIR    = 01 Updates/Twitter
 SCROLL_COUNT   = 10                 # scrolls per target (env override: SCROLL_COUNT)
 HEADED         = 0                  # set to 1 only for first-time login (headless by default)
 ```
