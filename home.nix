@@ -14,6 +14,11 @@
     # AI Tools (installed via npm for self-update support)
     # claude-code and amp-cli managed via: npm install -g @anthropic-ai/claude-code @sourcegraph/amp
     
+    # Content Tools (summarize skill)
+    yt-dlp           # YouTube/podcast download + metadata + subs
+    poppler_utils    # PDF text extraction (pdftotext)
+    pandoc           # EPUB / DOCX → markdown
+
     # CLI Essentials
     ripgrep          # Faster grep
     fd               # Faster find
