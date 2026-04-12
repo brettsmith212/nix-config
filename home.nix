@@ -97,6 +97,7 @@
 
     envExtra = ''
       export PATH="$HOME/.local/bin:$PATH"
+      export VAULT_ROOT="$HOME/Documents/vault"
     '';
 
     shellAliases = {
