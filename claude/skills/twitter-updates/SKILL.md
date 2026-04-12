@@ -137,8 +137,8 @@ Create one note per scrape target in `$VAULT_ROOT/$UPDATES_DIR/`.
 
 ### Filenames
 
-- Home Feed: `YYYY-MM-DD - X Feed.md`
-- Builders List: `YYYY-MM-DD - X Builders List.md`
+- Home Feed: `YYYY-MM-DD Twitter Feed.md`
+- Builders List: `YYYY-MM-DD Twitter Builders.md`
 
 ### Note structure
 
@@ -208,5 +208,5 @@ unread: true
 4. **Filter aggressively** — only tech/AI/startup/software content passes
 5. **Tweet embeds only** — no redundant @handle lines or blockquoted tweet text
 6. **One note per target** — separate files for feed vs. lists
-7. **Date-prefixed filenames** — `YYYY-MM-DD - X <Target>.md` for chronological sorting
+7. **Date-prefixed filenames** — `YYYY-MM-DD Twitter <Target>.md` for chronological sorting
 8. **Set `unread: true`** on every note created
