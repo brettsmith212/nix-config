@@ -16,7 +16,7 @@
     
     # Content Tools (summarize skill)
     yt-dlp           # YouTube/podcast download + metadata + subs
-    poppler_utils    # PDF text extraction (pdftotext)
+    poppler-utils    # PDF text extraction (pdftotext)
     pandoc           # EPUB / DOCX → markdown
 
     # CLI Essentials
