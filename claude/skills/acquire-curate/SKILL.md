@@ -74,18 +74,42 @@ To change criteria, edit `criteria.json` directly. The fields are:
 
 ### Personal preferences (for AI curation)
 
-When narrowing from ~100 listings to the top 20, prioritize:
+The goal of Rung 1 is **learning, not income**. Prioritize stable,
+understandable, boring businesses over hot/trendy ones. The first
+acquisition is tuition — it should teach operations without betting
+the savings.
 
-1. **Product-market fit signals** — paying customers, low churn, organic growth, repeat usage
-2. **Favorable multiples** — lower revenue/profit multiples = better deal
-3. **Solo-operator friendly** — small team or solo founder, low operational complexity
-4. **Growth potential** — clear untapped channels (SEO, paid, partnerships) the buyer can exploit
-5. **Tech stack alignment** — TypeScript, Node.js, React, Python, PostgreSQL preferred
-6. **Recurring revenue** — SaaS/subscription models over one-time sales
-7. **AI/automation angle** — tools leveraging AI, or businesses that could benefit from AI integration
-8. **Bootstrapped** — no investor cap table complications
-9. **Low asking price relative to revenue** — ideally <5x TTM revenue
-10. **Avoid** — crypto-heavy, pure dropshipping, businesses requiring domain expertise the buyer lacks (legal, healthcare compliance), businesses with >10% churn
+When narrowing from ~100 listings to the top 20, prioritize in this order:
+
+1. **Profit multiple under 4x** — market median is ~3.9x. Above this
+   is overpriced; well below this is either a steal or a lemon.
+2. **Positive growth rate** — flat (0–10%) is acceptable for Rung 1;
+   declining is disqualifying regardless of price.
+3. **Low churn (<5% monthly)** — single best predictor of a durable
+   business. >10% is a hard red flag.
+4. **Real customer base (25+ paying customers)** — PMF signal. Avoid
+   businesses with a handful of whale customers (concentration risk).
+5. **Understandable niche** — if you can't explain in one sentence who
+   pays for this and why, skip it. You need to credibly market it.
+6. **Tech stack you can maintain solo** — TypeScript, Node.js, Python,
+   PostgreSQL. Avoid unfamiliar stacks, heavy infra, or exotic runtimes.
+7. **Low owner-dependence** — documented processes, automated billing,
+   no "founder is the product" situations.
+8. **Bootstrapped** — no investor cap table complications.
+9. **B2B over B2C** — B2B churn is lower, prices are higher,
+   support volume is lower, customers are more rational.
+10. **Boring > trendy** — a dull accounting tool with 3 years of
+    flat revenue beats a hot AI wrapper with 6 months of hockey stick.
+
+**Hard disqualifiers** (cut even if everything else looks good):
+- Declining revenue (negative growth)
+- Churn >10% monthly
+- <12 months of operating history
+- Single-customer concentration >30% of revenue
+- Requires regulated domain expertise (healthcare, legal, financial advice)
+- Crypto-native, dropshipping, MLM-adjacent, or adult
+- "AI" as the only differentiator with no moat
+- Founder is the primary sales channel (personal brand dependency)
 
 ## Trigger
 
@@ -207,15 +231,16 @@ Revenue, profit, and price are strings like `"5k"`, `"14k"`, `"29k"`. Parse `k` 
 
 ### Hard filters
 
-- Must have non-empty `askingPrice`
-- Must have `ttmRevenue` > 0
-- Must have `ttmProfit` > 0
+* Must have non-empty `askingPrice`
+* Must have `ttmRevenue` ≥ $12,000 (parseable as ≥12k)
+* Must have `ttmProfit` ≥ $6,000
+* Profit margin (ttmProfit / ttmRevenue) must be ≥ 20%
 
 ### Sort/rank by
 
-1. Revenue-to-price ratio (higher = better deal, i.e. lower multiple)
-2. Profit margin (`ttmProfit / ttmRevenue`, higher is better)
-3. Asking price (prefer lower)
+1. Profit-to-price ratio (higher = better, i.e. lower profit multiple)
+2. Profit margin (higher = better)
+3. Absolute profit (higher = better, more room to absorb setbacks)
 
 Keep the top 100. If fewer than 100 pass hard filters, keep all that pass.
 
@@ -278,14 +303,16 @@ Read `/tmp/acquire-details.json`. For each successfully scraped listing, score o
 
 | Factor | Weight | Scoring |
 |---|---|---|
-| Revenue multiple | 25% | Lower = better. <3x = excellent, 3-5x = good, >5x = mediocre |
-| Growth rate | 20% | Higher = better. >50% = excellent, 20-50% = good, <20% = mediocre |
-| Profit margin | 15% | TTM profit / TTM revenue. >70% = excellent, 40-70% = good |
-| Customer count | 10% | More = better PMF signal. 100+ = excellent |
-| Churn rate | 10% | Lower = better. <5% = excellent, 5-10% = good, >10% = red flag |
-| Solo-operator fit | 10% | "Just me" team, bootstrapped, simple tech stack = excellent |
-| Tech stack match | 5% | Overlap with preferred stacks = better |
-| Buyer interest | 5% | Fewer viewers = less competition |
+| Profit multiple | 20% | Lower = better. <3x = excellent, 3-4x = good, >4x = mediocre |
+| Growth rate | 15% | >30% = excellent, 10-30% = good, 0-10% = ok, <0% = disqualify |
+| Churn rate | 15% | <3% = excellent, 3-5% = good, 5-10% = concerning, >10% = disqualify |
+| Profit margin | 10% | TTM profit / TTM revenue. >60% = excellent, 40-60% = good |
+| Customer count | 10% | 100+ = excellent, 25-100 = good, <25 = weak PMF |
+| Owner-dependence | 10% | Documented processes, automation, "founder not required" = excellent |
+| Revenue multiple | 5% | Lower = better. Secondary to profit multiple |
+| Tech stack match | 5% | TypeScript/Node/Python/Postgres overlap |
+| Niche clarity | 5% | Can you explain who pays and why in one sentence? |
+| Solo-operator fit | 5% | Team size, operational complexity |
 
 Rank all successfully scraped listings and produce the final report. If some detail pages failed, note how many were excluded.
 
