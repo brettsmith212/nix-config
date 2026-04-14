@@ -102,7 +102,7 @@
 
     envExtra = ''
       export PATH="$HOME/.local/bin:$PATH"
-      export VAULT_ROOT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/HomeVault"
+      export VAULT_ROOT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/vault"
     '';
 
     shellAliases = {
