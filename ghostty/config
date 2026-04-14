@@ -1,6 +1,6 @@
 theme = Everforest Dark Hard
 font-size = 16
-font-family = "TX-02"
+font-family = "Berkeley Mono"
 shell-integration-features = no-cursor,sudo,no-title
 cursor-style = block
 adjust-cell-height = 25%
