@@ -30,7 +30,7 @@ Scrapes X (Twitter) home feed and curated lists using Playwright with a persiste
 ```
 VAULT_ROOT     = $VAULT_ROOT        # auto-detected from workspace
 UPDATES_DIR    = 01 Updates/Twitter
-SCROLL_COUNT   = 10                 # scrolls per target (env override: SCROLL_COUNT)
+SCROLL_COUNT   = 20                 # scrolls per target (env override: SCROLL_COUNT)
 HEADED         = 0                  # set to 1 only for first-time login (headless by default)
 ```
 
