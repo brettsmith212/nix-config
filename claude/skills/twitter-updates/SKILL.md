@@ -140,6 +140,8 @@ Create one note per scrape target in `$VAULT_ROOT/$UPDATES_DIR/`.
 - Home Feed: `YYYY-MM-DD Twitter Feed.md`
 - Builders List: `YYYY-MM-DD Twitter Builders.md`
 
+If a file already exists for today, append a sequence number: `YYYY-MM-DD Twitter Feed 2.md`, `YYYY-MM-DD Twitter Feed 3.md`, etc. Check the output directory before writing.
+
 ### Note structure
 
 ```markdown
