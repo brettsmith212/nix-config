@@ -39,6 +39,8 @@
     # Disable show suggested and recent apps in Dock
     dock.show-recents = false;
 
+    # Reduce motion (instant desktop transitions)
+    universalaccess.reduceMotion = true;
 
     # Show battery percentage in menu bar
     controlcenter.BatteryShowPercentage = true;
@@ -59,6 +61,10 @@
       # Disable fn key opening emoji picker (0 = Do Nothing)
       "com.apple.HIToolbox" = {
         AppleFnUsageType = 0;
+      };
+      # Show full website address in Safari Smart Search field
+      "com.apple.Safari" = {
+        ShowFullURLInSmartSearchField = true;
       };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
@@ -119,10 +125,6 @@
 
     # AC sleep settings
     pmset -c displaysleep 10 sleep 15
-
-    # Settings that must run as user (not root) to write per-user preference domains
-    sudo -u brettsmith defaults write com.apple.universalaccess reduceMotion -bool true
-    sudo -u brettsmith defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
     # Configure Dock apps (must run as user, not root)
     sudo -u brettsmith /opt/homebrew/bin/dockutil --remove all --no-restart
