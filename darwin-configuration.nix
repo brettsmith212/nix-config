@@ -51,8 +51,6 @@
     # Show Sound/Volume in menu bar (18 = always show)
     controlcenter.Sound = true;
 
-    # Enable Cmd+1 through Cmd+5 for switching desktops
-    # You must first create 5 desktops in Mission Control manually
     CustomUserPreferences = {
       # Click wallpaper to show desktop: Only in Stage Manager
       "com.apple.WindowManager" = {
@@ -65,50 +63,6 @@
       # Show full website address in Safari Smart Search field
       "com.apple.Safari" = {
         ShowFullURLInSmartSearchField = true;
-      };
-      "com.apple.symbolichotkeys" = {
-        AppleSymbolicHotKeys = {
-          # Switch to Desktop 1: Cmd+1
-          "118" = {
-            enabled = true;
-            value = {
-              type = "standard";
-              parameters = [ 49 18 1048576 ];
-            };
-          };
-          # Switch to Desktop 2: Cmd+2
-          "119" = {
-            enabled = true;
-            value = {
-              type = "standard";
-              parameters = [ 50 19 1048576 ];
-            };
-          };
-          # Switch to Desktop 3: Cmd+3
-          "120" = {
-            enabled = true;
-            value = {
-              type = "standard";
-              parameters = [ 51 20 1048576 ];
-            };
-          };
-          # Switch to Desktop 4: Cmd+4
-          "121" = {
-            enabled = true;
-            value = {
-              type = "standard";
-              parameters = [ 52 21 1048576 ];
-            };
-          };
-          # Switch to Desktop 5: Cmd+5
-          "122" = {
-            enabled = true;
-            value = {
-              type = "standard";
-              parameters = [ 53 23 1048576 ];
-            };
-          };
-        };
       };
     };
   };
