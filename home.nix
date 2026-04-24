@@ -33,6 +33,16 @@
   programs.zoxide.enable = true;
   programs.zoxide.enableZshIntegration = true;
 
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    # Shared excludes for noisy macOS / dev junk
+    # (Library, caches, node_modules, etc. all live under $HOME)
+    changeDirWidgetCommand = "fd --type d --hidden --follow --exclude .git --exclude node_modules --exclude Library --exclude .cache --exclude .npm --exclude .cargo --exclude .rustup --exclude .local/share . $HOME";
+    fileWidgetCommand    = "fd --type f --hidden --follow --exclude .git --exclude node_modules --exclude Library --exclude .cache --exclude .npm --exclude .cargo --exclude .rustup --exclude .local/share . $HOME";
+    defaultCommand       = "fd --type f --hidden --follow --exclude .git --exclude node_modules --exclude Library --exclude .cache --exclude .npm --exclude .cargo --exclude .rustup --exclude .local/share . $HOME";
+  };
+
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
