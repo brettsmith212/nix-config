@@ -50,8 +50,8 @@ local function snap(side)
   end
 end
 
-hs.hotkey.bind({"ctrl", "shift"}, "h", function() snap("left")  end)
-hs.hotkey.bind({"ctrl", "shift"}, "l", function() snap("right") end)
+hs.hotkey.bind({"ctrl", "shift"}, "left",  function() snap("left")  end)
+hs.hotkey.bind({"ctrl", "shift"}, "right", function() snap("right") end)
 
 -- Ctrl+Shift+F maximizes the focused window (fills screen, not macOS fullscreen)
 hs.hotkey.bind({"ctrl", "shift"}, "f", function()
