@@ -21,6 +21,7 @@
 
     casks = [
       "ghostty"
+      "hammerspoon"
       "obsidian"
       "zoom"
     ];

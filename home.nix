@@ -139,5 +139,10 @@
     recursive = true;
   };
 
+  home.file.".hammerspoon" = {
+    source = ./hammerspoon;
+    recursive = true;
+  };
+
   home.stateVersion = "24.05";
 }
