@@ -111,7 +111,7 @@
     '';
 
     envExtra = ''
-      export PATH="$HOME/.local/bin:$PATH"
+      export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
       export VAULT_ROOT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/vault"
     '';
 
@@ -144,6 +144,12 @@
     source = ./hammerspoon;
     recursive = true;
   };
+
+  # Point npm global installs at a user-writable prefix so `npm i -g`
+  # doesn't try to write into the read-only nix store.
+  home.file.".npmrc".text = ''
+    prefix=${"\${HOME}"}/.npm-global
+  '';
 
   home.stateVersion = "24.05";
 }
