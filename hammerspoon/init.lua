@@ -10,6 +10,11 @@ prefix:bind({}, "p", function()
   prefix:exit()
 end)
 
+prefix:bind({}, "c", function()
+  hs.eventtap.keyStroke({"cmd"}, "t")  -- new tab
+  prefix:exit()
+end)
+
 prefix:bind({}, "escape", function() prefix:exit() end)
 
 -- Ctrl-A hotkey, only enabled while Safari is frontmost
