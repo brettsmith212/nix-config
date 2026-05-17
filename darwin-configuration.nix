@@ -17,6 +17,8 @@
 
     brews = [
       "dockutil"
+      "xcodegen"           # iOS/macOS project generation from project.yml
+      "xcode-build-server" # sourcekit-lsp ↔ xcodebuild bridge for nvim
     ];
 
     casks = [
