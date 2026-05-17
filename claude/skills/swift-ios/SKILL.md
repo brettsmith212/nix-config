@@ -48,15 +48,18 @@ Use `clean build` (not just `build`) when `.compile` is empty/stale — incremen
 
 4. **Add `.gitignore`** (see [reference/gitignore.template](reference/gitignore.template)) — ignores `*.xcodeproj/`, `buildServer.json`, `.compile`, `.bsp/`, `DerivedData/`, `xcuserdata/`.
 
-5. **Generate, build, wire up LSP, launch** (see [reference/scaffold-commands.md](reference/scaffold-commands.md) for the exact sequence).
+5. **Add `run.sh`** at the project root (see [reference/run.sh.template](reference/run.sh.template)) and `chmod +x run.sh`. This is the canonical build+install+launch script — every new app gets one so daily iteration is a single `./run.sh`. It pipes through `xcode-build-server parse -av` (keeps `.compile` fresh for sourcekit-lsp) and resolves `PRODUCT_BUNDLE_IDENTIFIER` from `xcodebuild -showBuildSettings` instead of hardcoding the bundle id (works for sample-code projects whose id is derived from `${DEVELOPMENT_TEAM}`).
+
+6. **Generate, build, wire up LSP, launch** (see [reference/scaffold-commands.md](reference/scaffold-commands.md) for the exact sequence).
 
 ## Daily workflow
 
 | Triggered by | Run |
 |---|---|
-| Changed `project.yml` (added file, target, setting) | `xcodegen generate` |
-| Added/renamed a source file | `xcodegen generate` then re-run the build+parse pipe |
-| Changed build settings, scheme, or want fresh LSP data | Build+parse pipe (use `clean build` if `.compile` looks stale) |
+| Edited Swift source, want to see it on the sim | `./run.sh` |
+| Changed `project.yml` (added file, target, setting) | `xcodegen generate` then `./run.sh` |
+| Added/renamed a source file | `xcodegen generate` then `./run.sh` |
+| Changed build settings, scheme, or want fresh LSP data | `./run.sh` (use `clean build` in the script if `.compile` looks stale) |
 | sourcekit-lsp seems confused or symbols don't resolve | `clean build` through the pipe, then restart nvim |
 
 ## When the user reports "LSP not working" / "gd doesn't jump"

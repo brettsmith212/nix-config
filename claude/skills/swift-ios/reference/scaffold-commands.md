@@ -1,6 +1,6 @@
 # Scaffold + run sequence for a new iOS app
 
-Run these from the project root (`~/Documents/Developer/iOS/<AppName>`) after writing `project.yml`, `Sources/<AppName>App.swift`, `Sources/ContentView.swift`, and `.gitignore`.
+Run these from the project root (`~/Documents/Developer/iOS/<AppName>`) after writing `project.yml`, `Sources/<AppName>App.swift`, `Sources/ContentView.swift`, `.gitignore`, and `run.sh` (see [run.sh.template](run.sh.template); `chmod +x run.sh`).
 
 Substitute `<AppName>` and a simulator name from `xcrun simctl list devices available | grep iPhone`.
 
@@ -29,6 +29,14 @@ xcode-build-server config -scheme <AppName> -project <AppName>.xcodeproj
 This writes `buildServer.json`. nvim's sourcekit-lsp uses it (plus `.compile`) on next open.
 
 ## 4. Boot simulator, install, launch
+
+Use the project's `run.sh` (created during scaffolding) — it handles boot, build+parse pipe, install, terminate-previous, and launch:
+
+```bash
+./run.sh
+```
+
+Manual equivalent (only if `run.sh` is missing):
 
 ```bash
 xcrun simctl boot "iPhone 17 Pro" 2>/dev/null
