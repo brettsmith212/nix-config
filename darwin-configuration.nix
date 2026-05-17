@@ -40,6 +40,9 @@
     # Disable show suggested and recent apps in Dock
     dock.show-recents = false;
 
+    # Auto-hide the Dock
+    dock.autohide = true;
+
     # Reduce motion (instant desktop transitions)
     universalaccess.reduceMotion = true;
 
