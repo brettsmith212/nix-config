@@ -1,0 +1,15 @@
+// Config.xcconfig.example — copy to Config.xcconfig and fill in real values.
+// Config.xcconfig itself is gitignored. Wire it into the build via project.yml:
+//
+//     configFiles:
+//       Debug: Config.xcconfig
+//       Release: Config.xcconfig
+//
+// Expose values to Swift through Info.plist entries that reference $(KEY)
+// (set under targets.<AppName>.info.properties in project.yml), then read
+// them at runtime via Bundle.main.object(forInfoDictionaryKey:).
+
+// --- Example: third-party API credentials ---
+EXAMPLE_API_BASE_URL = https://api.example.com
+EXAMPLE_CLIENT_ID    = your-client-id-here
+EXAMPLE_CLIENT_SECRET = your-client-secret-here

@@ -1,51 +1,43 @@
 # Scaffold + run sequence for a new iOS app
 
-Run these from the project root (`~/Documents/Developer/iOS/<AppName>`) after writing `project.yml`, `Sources/<AppName>App.swift`, `Sources/ContentView.swift`, `.gitignore`, and `run.sh` (see [run.sh.template](run.sh.template); `chmod +x run.sh`).
+Run these from the project root (`~/Documents/Developer/iOS/<AppName>`) after writing `project.yml`, `Sources/<AppName>App.swift`, `Sources/ContentView.swift`, `.gitignore`, and `Makefile` (see [Makefile.template](Makefile.template); substitute `SCHEME` / `PROJECT`).
 
 Substitute `<AppName>` and a simulator name from `xcrun simctl list devices available | grep iPhone`.
 
 ## 1. Generate the Xcode project
 
 ```bash
-xcodegen generate
+make gen        # alias for `xcodegen generate`
 ```
 
 ## 2. First build (must succeed before xcode-build-server config works)
 
 ```bash
-xcodebuild -project <AppName>.xcodeproj -scheme <AppName> \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build \
-  | xcode-build-server parse -av
+make build
 ```
 
-If `.compile` ends up empty (1–2 bytes), rerun with `clean build` instead of `build` — incremental builds skip the swift-compile invocations that `parse` needs.
+`make build` already pipes through `xcode-build-server parse -av`. If `.compile` ends up empty (1–2 bytes), run `make refresh-lsp` instead — incremental builds skip the swift-compile invocations that `parse` needs.
 
 ## 3. Wire up sourcekit-lsp
 
 ```bash
-xcode-build-server config -scheme <AppName> -project <AppName>.xcodeproj
+make lsp-config
 ```
 
 This writes `buildServer.json`. nvim's sourcekit-lsp uses it (plus `.compile`) on next open.
 
 ## 4. Boot simulator, install, launch
 
-Use the project's `run.sh` (created during scaffolding) — it handles boot, build+parse pipe, install, terminate-previous, and launch:
-
 ```bash
-./run.sh
+make run
 ```
 
-Manual equivalent (only if `run.sh` is missing):
+`make run` = `build` + `install` + `launch`. It boots the simulator (waits via `simctl bootstatus booted -b`), installs the `.app` from `build/Build/Products/Debug-iphonesimulator/<Scheme>.app`, resolves the bundle id from `xcodebuild -showBuildSettings`, terminates any previous instance, and launches.
+
+Override the simulator per-invocation:
 
 ```bash
-xcrun simctl boot "iPhone 17 Pro" 2>/dev/null
-open -a Simulator
-APP_PATH=$(xcodebuild -project <AppName>.xcodeproj -scheme <AppName> \
-  -showBuildSettings -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
-  | awk -F' = ' '/^[[:space:]]+BUILT_PRODUCTS_DIR/ {print $2; exit}')/<AppName>.app
-xcrun simctl install booted "$APP_PATH"
-xcrun simctl launch booted com.brettsmith.<AppName>
+make run SIM_NAME="iPhone 16"
 ```
 
 ## 5. (Optional) Stream app logs
