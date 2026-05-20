@@ -130,6 +130,17 @@
     ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.amp/skills"
   '';
 
+  # fb-idb (the `idb` CLI) — dependency of ios-simulator-mcp:
+  # https://github.com/joshuayoes/ios-simulator-mcp
+  # Not in nixpkgs or Homebrew, so install it via uv as an isolated tool.
+  # Pinned to Python 3.11 because fb-idb 1.1.7 still uses the
+  # removed-in-3.12 `asyncio.get_event_loop()` API.
+  home.activation.installFbIdb = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if ! ${pkgs.uv}/bin/uv tool list 2>/dev/null | grep -q '^fb-idb '; then
+      $DRY_RUN_CMD ${pkgs.uv}/bin/uv tool install --python 3.11 fb-idb
+    fi
+  '';
+
   xdg.configFile."nvim" = {
     source = ./nvim;
     recursive = true;

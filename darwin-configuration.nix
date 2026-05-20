@@ -15,10 +15,19 @@
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
 
+    taps = [
+      # idb-companion lives in facebook's tap
+      # Dependency of ios-simulator-mcp: https://github.com/joshuayoes/ios-simulator-mcp
+      "facebook/fb"
+    ];
+
     brews = [
       "dockutil"
       "xcodegen"           # iOS/macOS project generation from project.yml
       "xcode-build-server" # sourcekit-lsp ↔ xcodebuild bridge for nvim
+      # iOS Simulator control daemon — dependency of ios-simulator-mcp
+      # https://github.com/joshuayoes/ios-simulator-mcp
+      "idb-companion"
     ];
 
     casks = [
