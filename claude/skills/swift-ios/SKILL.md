@@ -80,6 +80,16 @@ Diagnose in this order — don't skip steps:
 4. **Test on a local symbol first**, not on `import SwiftUI` — `gd` on a module import has no destination. Try `gd` on `ContentView()` or on a protocol like `View`.
 5. **Restart nvim** after regenerating `.compile` so the LSP client picks up new compile commands.
 
+## Interacting with the running simulator (ios-simulator MCP)
+
+Once `make run` has launched the app, prefer the `mcp__ios_simulator__*` tools over asking the user to drive the sim by hand. They wrap [ios-simulator-mcp](https://github.com/joshuayoes/ios-simulator-mcp) (idb-companion + fb-idb, both installed via nix-config) and cover what's needed to verify a change end-to-end:
+
+- **Screenshot / inspect** — `screenshot`, `ui_describe_all`, `ui_describe_point`, `ui_find_element` to confirm a view rendered or to locate an element by label.
+- **Drive the UI** — `ui_tap`, `ui_type`, `ui_swipe` to exercise flows (login, navigation, form input) without bouncing back to the user.
+- **Lifecycle** — `get_booted_sim_id`, `launch_app`, `install_app`, `record_video` / `stop_recording` when you need a repro artifact.
+
+Use it after any UI-affecting change: `make run` → `screenshot` (or `ui_describe_all`) → verify → only then report back. Don't ask the user "can you check the screen?" if you can check it yourself.
+
 ## When Xcode is still required
 
 Do not try to script these — open Xcode:
