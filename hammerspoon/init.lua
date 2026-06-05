@@ -43,15 +43,38 @@ appWatcher:start()
 local front = hs.application.frontmostApplication()
 updateForApp(front and front:name() or "")
 
--- Window snapping: Ctrl+Shift+Left/Right pins the focused window to that half
+-- Ctrl+Shift+C copies the URL of the frontmost Safari tab via AppleScript
+hs.hotkey.bind({ "ctrl", "shift" }, "c", function()
+  local front = hs.application.frontmostApplication()
+  local name = front and front:name() or ""
+  if name ~= "Safari" then return end
+  local ok, url = hs.osascript.applescript('tell application "Safari" to return URL of front document')
+  if ok and url then
+    hs.pasteboard.setContents(url)
+    hs.alert.show("URL copied", 0.8)
+  end
+end)
+
+-- Window snapping: Ctrl+Shift+Left/Right cycles through 1/3, 1/2, 2/3 width
+local snapFractions = { 1 / 3, 1 / 2, 2 / 3 }
+local snapState = { winId = nil, side = nil, step = 0 }
+
 local function snap(side)
   local win = hs.window.focusedWindow()
   if not win then return end
+  if snapState.winId == win:id() and snapState.side == side then
+    snapState.step = (snapState.step % #snapFractions) + 1
+  else
+    snapState.winId = win:id()
+    snapState.side = side
+    snapState.step = 1
+  end
+  local frac = snapFractions[snapState.step]
   local f = win:screen():frame()  -- usable area (excludes menu bar / dock)
   if side == "left" then
-    win:setFrame({ x = f.x,           y = f.y, w = f.w / 2, h = f.h })
+    win:setFrame({ x = f.x,                    y = f.y, w = f.w * frac, h = f.h })
   else
-    win:setFrame({ x = f.x + f.w / 2, y = f.y, w = f.w / 2, h = f.h })
+    win:setFrame({ x = f.x + f.w * (1 - frac), y = f.y, w = f.w * frac, h = f.h })
   end
 end
 
@@ -64,11 +87,20 @@ hs.hotkey.bind({"ctrl", "shift"}, "f", function()
   if win then win:setFrame(win:screen():frame()) end
 end)
 
--- Ctrl+Shift+T centers the focused window at 80% width x 90% height
-hs.hotkey.bind({"ctrl", "shift"}, "t", function()
-  local win = hs.window.focusedWindow()
-  if not win then return end
-  local f = win:screen():frame()
-  local w, h = f.w * 0.80, f.h * 0.90
-  win:setFrame({ x = f.x + (f.w - w) / 2, y = f.y + (f.h - h) / 2, w = w, h = h })
+-- Ctrl+Shift+T centers the focused window at 90% width x 90% height
+-- Uses eventtap instead of hs.hotkey because something (likely Ghostty) claims
+-- Ctrl+Shift+T globally before the hotkey system sees it.
+centerTap = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
+  if e:getFlags().ctrl and e:getFlags().shift and not e:getFlags().alt and not e:getFlags().cmd then
+    if e:getKeyCode() == hs.keycodes.map["t"] then
+      local win = hs.window.focusedWindow()
+      if win then
+        local f = win:screen():frame()
+        local w, h = f.w * 0.90, f.h * 0.90
+        win:setFrame({ x = f.x + (f.w - w) / 2, y = f.y + (f.h - h) / 2, w = w, h = h })
+      end
+      return true
+    end
+  end
 end)
+centerTap:start()
