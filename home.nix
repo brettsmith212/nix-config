@@ -19,6 +19,10 @@
     poppler-utils    # PDF text extraction (pdftotext)
     pandoc           # EPUB / DOCX → markdown
 
+    # iOS tooling
+    idb-companion    # iOS sim/device automation daemon — dependency of
+                     # ios-simulator-mcp (https://github.com/joshuayoes/ios-simulator-mcp)
+
     # CLI Essentials
     ripgrep          # Faster grep
     fd               # Faster find

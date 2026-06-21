@@ -19,19 +19,24 @@
     # emits a bare `--cleanup`, so pass --force-cleanup ourselves.
     onActivation.extraFlags = [ "--force-cleanup" ];
 
-    taps = [
-      # idb-companion lives in facebook's tap
-      # Dependency of ios-simulator-mcp: https://github.com/joshuayoes/ios-simulator-mcp
-      "facebook/fb"
-    ];
-
     brews = [
       "dockutil"
       "xcodegen"           # iOS/macOS project generation from project.yml
       "xcode-build-server" # sourcekit-lsp ↔ xcodebuild bridge for nvim
-      # iOS Simulator control daemon — dependency of ios-simulator-mcp
-      # https://github.com/joshuayoes/ios-simulator-mcp
-      "idb-companion"
+
+      # Odysseus (start-macos.sh) — declared here so onActivation.cleanup =
+      # "zap" doesn't remove them on the next rebuild.
+      #   python@3.11 : the start script's top-priority interpreter for building
+      #                 venv/ — also a system 3.11 for `uv tool install --python
+      #                 3.11 fb-idb` to reuse instead of downloading its own.
+      #                 (Lives at /opt/homebrew/bin/python3.11; kept out of the
+      #                 Nix profile because it would collide with python314's
+      #                 bin/python3 symlink.)
+      #   tmux / llama.cpp / apfel : Cookbook local model serving.
+      "python@3.11"
+      "tmux"               # Cookbook runs model downloads/serves in tmux
+      "llama.cpp"          # prebuilt Metal-enabled llama-server for GGUF models
+      "apfel"              # local OpenAI-compatible model server (Apple Silicon)
     ];
 
     casks = [
