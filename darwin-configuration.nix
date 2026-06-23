@@ -14,10 +14,6 @@
     onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
-    # Homebrew 4.x made `brew bundle install --cleanup` require explicit
-    # confirmation (--force/--force-cleanup/$HOMEBREW_ASK). nix-darwin still
-    # emits a bare `--cleanup`, so pass --force-cleanup ourselves.
-    onActivation.extraFlags = [ "--force-cleanup" ];
 
     brews = [
       "dockutil"
@@ -44,6 +40,7 @@
       "hammerspoon"
       "obsidian"
       "zoom"
+      "docker-desktop"
     ];
   };
 
