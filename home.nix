@@ -11,8 +11,9 @@
     nodejs_22        # Node.js
     rustup           # Rust
     
-    # AI Tools (installed via npm for self-update support)
+    # AI Tools (installed externally for self-update support; PATH set in zsh envExtra)
     # claude-code and amp-cli managed via: npm install -g @anthropic-ai/claude-code @sourcegraph/amp
+    # opencode managed via: curl -fsSL https://opencode.ai/install | bash  (installs to ~/.opencode/bin)
     
     # Content Tools (summarize skill)
     yt-dlp           # YouTube/podcast download + metadata + subs
@@ -115,7 +116,7 @@
     '';
 
     envExtra = ''
-      export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+      export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.opencode/bin:$PATH"
       export VAULT_ROOT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/vault"
     '';
 
