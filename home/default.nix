@@ -187,9 +187,14 @@ EOF
 
   home.file.".tmux.conf".source = ../tmux/tmux.conf;
 
-  home.file.".tmux-opencode-popup.sh" = {
-    source = ../tmux/tmux-opencode-popup.sh;
-    executable = true;
+  home.file.".tmux/opencode" = {
+    source = ../tmux/opencode;
+    recursive = true;
+  };
+
+  # OpenCode plugin that reports session state to the tmux session manager.
+  xdg.configFile."opencode/plugins/tmux-session-state.js" = {
+    source = ../opencode/plugins/tmux-session-state.js;
   };
 
   # Point npm global installs at a user-writable prefix so `npm i -g`

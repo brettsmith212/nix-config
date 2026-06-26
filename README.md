@@ -8,7 +8,7 @@ and a standalone Home Manager for Linux (e.g. exe.dev VMs).
 - `flake.nix` — dual outputs: `darwinConfigurations.<hostname>` (macOS) and `homeConfigurations.exedev` (Linux). `darwin-rebuild` automatically picks the macOS output whose name matches `scutil --get LocalHostName`, so you can add multiple Macs to the `darwinHosts` list.
 - `darwin/` — nix-darwin system module (Homebrew casks, system defaults, dockutil, etc.). macOS only.
 - `home/` — cross-platform Home Manager config. Branches on `pkgs.stdenv.isDarwin` for username, `VAULT_ROOT`, the `update` alias, and macOS-only files (Hammerspoon).
-- `nvim/`, `tmux/`, `ghostty/`, `claude/`, `hammerspoon/` — dotfile trees symlinked into `$HOME` or `$XDG_CONFIG_HOME`.
+- `nvim/`, `tmux/`, `ghostty/`, `claude/`, `hammerspoon/`, `opencode/` — dotfile trees or individual config files symlinked into `$HOME` or `$XDG_CONFIG_HOME`.
 
 ## First-Time Setup (macOS)
 
