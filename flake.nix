@@ -1,5 +1,5 @@
 {
-  description = "Engineer MacOS Configuration";
+  description = "Cross-platform nix config: nix-darwin + home-manager for macOS, standalone home-manager for Linux (e.g. exe.dev VMs)";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -9,20 +9,25 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }: let
-    hostname = "Bretts-MacBook"; # Set to output of: scutil --get LocalHostName
-  in {
-    darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
+  outputs = { self, nix-darwin, nixpkgs, home-manager, ... }: {
+    # macOS: sudo nix run nix-darwin -- switch --flake ~/.config/nix-config
+    darwinConfigurations."Bretts-Mac-mini" = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
-        ./darwin-configuration.nix
+        ./darwin
         home-manager.darwinModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.brettsmith = import ./home.nix;
+          home-manager.users.brettsmith = import ./home;
         }
       ];
+    };
+
+    # Linux (e.g. exe.dev VMs): nix run home-manager -- switch --flake .#exedev
+    homeConfigurations.exedev = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      modules = [ ./home ];
     };
   };
 }

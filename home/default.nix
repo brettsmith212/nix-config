@@ -1,39 +1,36 @@
 { pkgs, lib, ... }: {
-  home.username = "brettsmith";
-  home.homeDirectory = "/Users/brettsmith";
-  home.sessionPath = [ "/opt/homebrew/bin" ];
+  home.username = if pkgs.stdenv.isDarwin then "brettsmith" else "exedev";
+  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/brettsmith" else "/home/exedev";
+  home.stateVersion = "24.05";
+
+  home.sessionPath = lib.optionals pkgs.stdenv.isDarwin [ "/opt/homebrew/bin" ];
 
   home.packages = with pkgs; [
     # Dev Languages
-    python314        # Latest Python
-    uv               # Fast Python package manager
-    go               # Go
-    nodejs_22        # Node.js
-    rustup           # Rust
-    
-    # AI Tools (installed externally for self-update support; PATH set in zsh envExtra)
-    # claude-code and amp-cli managed via: npm install -g @anthropic-ai/claude-code @sourcegraph/amp
-    # opencode managed via: curl -fsSL https://opencode.ai/install | bash  (installs to ~/.opencode/bin)
-    
-    # Content Tools (summarize skill)
-    yt-dlp           # YouTube/podcast download + metadata + subs
-    poppler-utils    # PDF text extraction (pdftotext)
-    pandoc           # EPUB / DOCX → markdown
+    python314
+    uv
+    go
+    nodejs_22
+    rustup
 
-    # iOS tooling
-    idb-companion    # iOS sim/device automation daemon — dependency of
-                     # ios-simulator-mcp (https://github.com/joshuayoes/ios-simulator-mcp)
+    # Content Tools (summarize skill)
+    yt-dlp
+    poppler-utils
+    pandoc
 
     # CLI Essentials
-    ripgrep          # Faster grep
-    fd               # Faster find
-    fzf              # Fuzzy finder
-    eza              # Better 'ls'
-    zoxide           # Better 'cd'
-    lazygit          # Git TUI
-    jq               # JSON processor
-    neovim           # Neovim
-    tmux             # Terminal multiplexer
+    ripgrep
+    fd
+    fzf
+    eza
+    zoxide
+    lazygit
+    jq
+    neovim
+    tmux
+  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    # iOS tooling (macOS only)
+    idb-companion
   ];
 
   programs.zoxide.enable = true;
@@ -42,8 +39,6 @@
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
-    # Shared excludes for noisy macOS / dev junk
-    # (Library, caches, node_modules, etc. all live under $HOME)
     changeDirWidgetCommand = "fd --type d --hidden --follow --exclude .git --exclude node_modules --exclude Library --exclude .cache --exclude .npm --exclude .cargo --exclude .rustup --exclude .local/share . $HOME";
     fileWidgetCommand    = "fd --type f --hidden --follow --exclude .git --exclude node_modules --exclude Library --exclude .cache --exclude .npm --exclude .cargo --exclude .rustup --exclude .local/share . $HOME";
     defaultCommand       = "fd --type f --hidden --follow --exclude .git --exclude node_modules --exclude Library --exclude .cache --exclude .npm --exclude .cargo --exclude .rustup --exclude .local/share . $HOME";
@@ -118,6 +113,7 @@
 
     envExtra = ''
       export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.opencode/bin:$PATH"
+    '' + lib.optionalString pkgs.stdenv.isDarwin ''
       export VAULT_ROOT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/vault"
     '';
 
@@ -125,7 +121,9 @@
       cc = "claude";
       oc = "opencode";
       ll = "eza -l --icons";
-      update = "sudo darwin-rebuild switch --flake ~/.config/nix-config";
+      update = if pkgs.stdenv.isDarwin
+        then "sudo darwin-rebuild switch --flake ~/.config/nix-config"
+        else "home-manager switch --flake ~/.config/nix-config";
       gr = "git stash && git pull --rebase origin main && git stash pop";
     };
   };
@@ -142,31 +140,35 @@
   # Not in nixpkgs or Homebrew, so install it via uv as an isolated tool.
   # Pinned to Python 3.11 because fb-idb 1.1.7 still uses the
   # removed-in-3.12 `asyncio.get_event_loop()` API.
-  home.activation.installFbIdb = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    if ! ${pkgs.uv}/bin/uv tool list 2>/dev/null | grep -q '^fb-idb '; then
-      $DRY_RUN_CMD ${pkgs.uv}/bin/uv tool install --python 3.11 fb-idb
-    fi
-  '';
+  # Skipped on Linux — fb-idb is iOS tooling and only useful on macOS.
+  home.activation.installFbIdb = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+    lib.optionalString pkgs.stdenv.isDarwin ''
+      if ! ${pkgs.uv}/bin/uv tool list 2>/dev/null | grep -q '^fb-idb '; then
+        $DRY_RUN_CMD ${pkgs.uv}/bin/uv tool install --python 3.11 fb-idb
+      fi
+    ''
+  );
 
   xdg.configFile."nvim" = {
-    source = ./nvim;
+    source = ../nvim;
     recursive = true;
   };
 
   xdg.configFile."ghostty" = {
-    source = ./ghostty;
+    source = ../ghostty;
     recursive = true;
   };
 
-  home.file.".hammerspoon" = {
-    source = ./hammerspoon;
+  # Hammerspoon is macOS-only
+  home.file.".hammerspoon" = lib.mkIf pkgs.stdenv.isDarwin {
+    source = ../hammerspoon;
     recursive = true;
   };
 
-  home.file.".tmux.conf".source = ./tmux/tmux.conf;
+  home.file.".tmux.conf".source = ../tmux/tmux.conf;
 
   home.file.".tmux-opencode-popup.sh" = {
-    source = ./tmux/tmux-opencode-popup.sh;
+    source = ../tmux/tmux-opencode-popup.sh;
     executable = true;
   };
 
@@ -175,6 +177,4 @@
   home.file.".npmrc".text = ''
     prefix=${"\${HOME}"}/.npm-global
   '';
-
-  home.stateVersion = "24.05";
 }
