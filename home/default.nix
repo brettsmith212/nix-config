@@ -5,6 +5,11 @@
 
   home.sessionPath = lib.optionals pkgs.stdenv.isDarwin [ "/opt/homebrew/bin" ];
 
+  home.sessionVariables = {
+    LANG = lib.mkDefault "C.UTF-8";
+    LC_ALL = lib.mkDefault "C.UTF-8";
+  };
+
   home.packages = with pkgs; [
     # Dev Languages
     python314
@@ -134,6 +139,21 @@
     ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.claude/skills"
     ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.amp/skills"
   '';
+
+  # Cloud images (e.g. exeuntu) ship with bash as the login shell and no
+  # password set on the user, so chsh can't authenticate via PAM. Workaround:
+  # have bash exec zsh on interactive login. Idempotent.
+  home.activation.execZshFromBash = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+    lib.optionalString pkgs.stdenv.isLinux ''
+      if [ -w "$HOME/.bashrc" ] && ! grep -qF 'exec zsh' "$HOME/.bashrc" 2>/dev/null; then
+        cat >> "$HOME/.bashrc" <<'EOF'
+
+# Auto-start zsh on interactive login (managed by home-manager)
+[ -n "$PS1" ] && [ -z "$ZSH_VERSION" ] && exec zsh
+EOF
+      fi
+    ''
+  );
 
   # fb-idb (the `idb` CLI) — dependency of ios-simulator-mcp:
   # https://github.com/joshuayoes/ios-simulator-mcp
