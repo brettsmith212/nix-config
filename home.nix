@@ -33,6 +33,7 @@
     lazygit          # Git TUI
     jq               # JSON processor
     neovim           # Neovim
+    tmux             # Terminal multiplexer
   ];
 
   programs.zoxide.enable = true;
@@ -160,6 +161,13 @@
   home.file.".hammerspoon" = {
     source = ./hammerspoon;
     recursive = true;
+  };
+
+  home.file.".tmux.conf".source = ./tmux/tmux.conf;
+
+  home.file.".tmux-opencode-popup.sh" = {
+    source = ./tmux/tmux-opencode-popup.sh;
+    executable = true;
   };
 
   # Point npm global installs at a user-writable prefix so `npm i -g`
