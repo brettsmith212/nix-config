@@ -5,7 +5,7 @@ and a standalone Home Manager for Linux (e.g. exe.dev VMs).
 
 ## Layout
 
-- `flake.nix` — dual outputs: `darwinConfigurations.Bretts-Mac-mini` (macOS) and `homeConfigurations.exedev` (Linux).
+- `flake.nix` — dual outputs: `darwinConfigurations.<hostname>` (macOS) and `homeConfigurations.exedev` (Linux). `darwin-rebuild` automatically picks the macOS output whose name matches `scutil --get LocalHostName`, so you can add multiple Macs to the `darwinHosts` list.
 - `darwin/` — nix-darwin system module (Homebrew casks, system defaults, dockutil, etc.). macOS only.
 - `home/` — cross-platform Home Manager config. Branches on `pkgs.stdenv.isDarwin` for username, `VAULT_ROOT`, the `update` alias, and macOS-only files (Hammerspoon).
 - `nvim/`, `tmux/`, `ghostty/`, `claude/`, `hammerspoon/` — dotfile trees symlinked into `$HOME` or `$XDG_CONFIG_HOME`.
@@ -42,15 +42,19 @@ nix-darwin manages Homebrew packages but expects Homebrew to already be installe
 git clone https://github.com/brettsmith212/nix-config.git ~/.config/nix-config
 ```
 
-### 5. Set Your Hostname in `flake.nix`
+### 5. Add Your Mac to `flake.narwinHosts`
 
-Update the `hostname` variable at the top of `flake.nix` to match your machine:
+Find your machine's hostname:
 
 ```sh
 scutil --get LocalHostName
 ```
 
-Then edit `flake.nix` and set `hostname = "YourHostnameHere";`.
+Then edit `flake.nix` and add it to the `darwinHosts` list if it isn't already there:
+
+```nix
+  darwinHosts = [ "Bretts-Mac-mini" "Your-Other-Mac" ];
+```
 
 ### 6. Apply the Configuration
 
