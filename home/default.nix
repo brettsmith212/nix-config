@@ -128,7 +128,7 @@
       ll = "eza -l --icons";
       update = if pkgs.stdenv.isDarwin
         then "sudo darwin-rebuild switch --flake ~/.config/nix-config"
-        else "home-manager switch --flake ~/.config/nix-config";
+        else "nix run home-manager -- switch --flake ~/.config/nix-config#exedev";
       gr = "git stash && git pull --rebase origin main && git stash pop";
     };
   };

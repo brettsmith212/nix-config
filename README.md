@@ -116,7 +116,7 @@ The Linux build targets the `exedev` user on `x86_64-linux` (the default exeuntu
    nix run home-manager -- switch --flake ~/.config/nix-config#exedev
    ```
 
-After that, `update` is aliased to `home-manager switch --flake ~/.config/nix-config`.
+After that, `update` is aliased to `nix run home-manager -- switch --flake ~/.config/nix-config#exedev`.
 
 ## Platform branching
 
@@ -128,7 +128,7 @@ After that, `update` is aliased to `home-manager switch --flake ~/.config/nix-co
 | `home.homeDirectory` | `/Users/brettsmith` | `/home/exedev` |
 | `home.sessionPath` | includes `/opt/homebrew/bin` | (none) |
 | `VAULT_ROOT` | iCloud Obsidian path | (unset) |
-| `update` alias | `sudo darwin-rebuild switch ...` | `home-manager switch ...` |
+| `update` alias | `sudo darwin-rebuild switch ...` | `nix run home-manager -- switch ...#exedev` |
 | `~/.hammerspoon` | symlinked | skipped (`null`) |
 | `installFbIdb` activation | runs | skipped (iOS tooling) |
 
