@@ -136,8 +136,10 @@
   home.activation.linkSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.claude"
     mkdir -p "$HOME/.amp"
+    mkdir -p "$HOME/.config/opencode"
     ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.claude/skills"
     ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.amp/skills"
+    ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.config/opencode/skills"
   '';
 
   # Cloud images (e.g. exeuntu) ship with bash as the login shell and no
