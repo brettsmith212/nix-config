@@ -1,4 +1,10 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+
+let
+  ocmux = pkgs.callPackage ../opencode/tmux-manager/default.nix {};
+in
+
+{
   home.username = if pkgs.stdenv.isDarwin then "brettsmith" else "exedev";
   home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/brettsmith" else "/home/exedev";
   home.stateVersion = "24.05";
@@ -33,6 +39,8 @@
     jq
     neovim
     tmux
+    bun
+    ocmux
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     # iOS tooling (macOS only)
     idb-companion
@@ -189,14 +197,9 @@ EOF
 
   home.file.".tmux.conf".source = ../tmux/tmux.conf;
 
-  home.file.".tmux/opencode" = {
-    source = ../tmux/opencode;
-    recursive = true;
-  };
-
   # OpenCode plugin that reports session state to the tmux session manager.
-  xdg.configFile."opencode/plugins/tmux-session-state.js" = {
-    source = ../opencode/plugins/tmux-session-state.js;
+  xdg.configFile."opencode/plugins/tmux-session-manager.js" = {
+    source = "${ocmux}/share/opencode/plugins/tmux-session-manager.js";
   };
 
   # Point npm global installs at a user-writable prefix so `npm i -g`
