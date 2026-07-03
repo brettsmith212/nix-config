@@ -31,8 +31,9 @@ or use the existing binding `Ctrl+a r`.
 
 ## Architecture
 
-- `llm-session-manager/` — Go source for `llmux`
 - `opencode/llmux-plugin/` — OpenCode plugin shim (JS)
-- `llm-session-manager/plugins/claude/` — Claude Code plugin (hooks)
+- The `llmux` binary and the Claude Code plugin live in a separate repo:
+  [`github:brettsmith212/llm-session-manager`](https://github.com/brettsmith212/llm-session-manager),
+  consumed as a flake input in `flake.nix` (`inputs.llmux`).
 
 State is stored on tmux sessions (`@llm_state`, `@llm_state_at`, etc.) and read by the picker.

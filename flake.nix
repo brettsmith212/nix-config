@@ -7,9 +7,13 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    llmux = {
+      url = "github:brettsmith212/llm-session-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nix-darwin, nixpkgs, home-manager, ... }:
+  outputs = { self, nix-darwin, nixpkgs, home-manager, llmux, ... }:
     let
       # Add each Mac hostname here. `darwin-rebuild switch --flake .` will
       # automatically pick the output whose name matches `scutil --get LocalHostName`.
@@ -17,12 +21,14 @@
 
       mkDarwin = hostname: nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
+        specialArgs = { inherit llmux; };
         modules = [
           ./darwin
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit llmux; };
             home-manager.users.brettsmith = import ./home;
           }
         ];
@@ -34,6 +40,7 @@
     # Linux (e.g. exe.dev VMs): nix run home-manager -- switch --flake .#exedev
     homeConfigurations.exedev = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      extraSpecialArgs = { inherit llmux; };
       modules = [ ./home ];
     };
   };

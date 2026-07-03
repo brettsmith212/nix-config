@@ -1,8 +1,9 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, llmux, ... }:
 
 let
   llmuxPlugin = pkgs.callPackage ../opencode/llmux-plugin/default.nix {};
-  llmux = pkgs.callPackage ../llm-session-manager/default.nix {};
+  llmuxPkg = llmux.packages.${pkgs.system}.default;
+  llmuxClaudePlugin = llmux.packages.${pkgs.system}.claude-plugin;
 in
 
 {
@@ -42,7 +43,7 @@ in
     neovim
     tmux
     bun
-    llmux
+    llmuxPkg
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     # iOS tooling (macOS only)
     idb-companion
@@ -202,6 +203,12 @@ EOF
   # OpenCode plugin shim that reports session state to llmux.
   xdg.configFile."opencode/plugins/tmux-session-manager.js" = {
     source = "${llmuxPlugin}/share/opencode/plugins/tmux-session-manager.js";
+  };
+
+  # Claude Code plugin (lives in the llmux flake) that reports session state to llmux.
+  home.file.".claude/plugins/llm-session-manager" = {
+    source = llmuxClaudePlugin;
+    recursive = true;
   };
 
   # Point npm global installs at a user-writable prefix so `npm i -g`
