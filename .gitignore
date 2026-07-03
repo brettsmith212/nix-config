@@ -1,2 +1,22 @@
 node_modules/
 dist/
+
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+go.work
+go.work.sum
+
+# Local binary builds
+llm-session-manager/llmux
+llmux
+
+# Nix build result symlinks
+result
+result-*

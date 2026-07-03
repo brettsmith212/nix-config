@@ -1,26 +1,27 @@
 /**
- * OpenCode plugin that tracks session state (working/idle/waiting) on the
- * tmux session, for display in the picker.
+ * OpenCode plugin shim that tracks session state (working/idle/waiting) on
+ * the tmux session, for display in the picker.
  *
- * Uses the event bus (the `event` hook), which is opencode's equivalent of
- * Claude Code's PreToolUse/Stop/Notification hooks:
+ * The actual state management and tmux interaction now live in the Go
+ * `llmux` binary. This plugin simply translates OpenCode's event bus into
+ * `llmux state <working|waiting|idle>` calls.
  *
+ * Event mapping:
  *   session.status {type:"busy"}     -> working   (red, busy)
  *   session.status {type:"idle"}     -> idle      (green, done)
  *   permission.asked / question.asked -> waiting  (yellow, needs input)
  *
  * One opencode process can run several sessions (root chat + `task`
- * sub-agents), each emitting its own status. We set state on the single tmux
- * session (resolved from $TMUX_PANE inside `ocmux state`), so we aggregate
- * across all sessionIDs: waiting if any is waiting, else working if any is
- * busy, else idle.
+ * sub-agents), each emitting its own status. `llmux state` resolves the
+ * tmux session from $TMUX_PANE, so we aggregate across all sessionIDs:
+ * waiting if any is waiting, else working if any is busy, else idle.
  */
 
-import type { State } from './types';
+type State = 'working' | 'waiting' | 'idle';
 
 async function setState($: any, state: State): Promise<void> {
   try {
-    await $`ocmux state ${state}`;
+    await $`llmux state ${state}`;
   } catch {
     // state updates are best-effort; never interrupt the agent
   }
