@@ -37,6 +37,7 @@ in
     eza
     zoxide
     lazygit
+    gh
     jq
     neovim
     tmux
