@@ -42,9 +42,31 @@ return {
     },
     opts = {
       diff = {
-        layout = "side-by-side",
+        layout = "inline",
         disable_inlay_hints = true,
       },
     },
+    config = function(_, opts)
+      require("codediff").setup(opts)
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "CodeDiffOpen",
+        callback = function()
+          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            vim.wo[win].wrap = true
+            vim.wo[win].linebreak = true
+            vim.wo[win].conceallevel = 2
+            vim.wo[win].signcolumn = "no"
+          end
+        end,
+      })
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "CodeDiffClose",
+        callback = function()
+          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            vim.wo[win].wrap = false
+          end
+        end,
+      })
+    end,
   },
 }
