@@ -29,6 +29,12 @@ or use the existing binding `Ctrl+a r`.
 - `Ctrl+a y` — toggle the LLM popup for the current directory
 - `Ctrl+a u` — open the session picker
 
+## Updating the llmux flake input
+
+```sh
+nix flake update llmux
+```
+
 ## Architecture
 
 - `opencode/llmux-plugin/` — OpenCode plugin shim (JS)

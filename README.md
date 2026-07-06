@@ -89,6 +89,16 @@ sudo nix run nix-darwin -- switch --flake ~/.config/nix-config
 
 [Tailscale MacOS Package](https://pkgs.tailscale.com/stable/#macos)
 
+## Updating Inputs
+
+Pull the latest commit of a flake input (e.g. the `llmux` llm-session-manager plugin):
+
+```sh
+nix flake update llmux
+```
+
+Then apply the configuration as below.
+
 ## Apply Changes
 
 ### macOS
