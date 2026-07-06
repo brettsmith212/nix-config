@@ -27,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783147348,
-        "narHash": "sha256-zEBjlUtgU7sXBZQUmtUb4ywKuas2byy9Wcrib8Ov04M=",
+        "lastModified": 1783301866,
+        "narHash": "sha256-HG1atteONkb2sQANZmCrt3Nxv6m5rsoucnI0Sw4IWMw=",
         "owner": "brettsmith212",
         "repo": "llm-session-manager",
-        "rev": "6d2d20fc6bd687981d6212728cb76fe736fe3438",
+        "rev": "4c8cd8fa6b4879cf4d931f557dc9acbbf57ee48e",
         "type": "github"
       },
       "original": {
