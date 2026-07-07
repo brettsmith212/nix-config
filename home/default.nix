@@ -125,6 +125,8 @@ in
       if [[ -n "$SSH_CONNECTION" ]]; then
         _zsh_autosuggest_disable
       fi
+
+      eval "$(llmux init zsh)"
     '';
 
     envExtra = ''
