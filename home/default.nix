@@ -213,6 +213,11 @@ EOF
     recursive = true;
   };
 
+  # Amp plugin that reports session state to llmux.
+  xdg.configFile."amp/plugins/llmux-state.ts" = {
+    source = ../amp/llmux-plugin/llmux-state.ts;
+  };
+
   # Point npm global installs at a user-writable prefix so `npm i -g`
   # doesn't try to write into the read-only nix store.
   home.file.".npmrc".text = ''
