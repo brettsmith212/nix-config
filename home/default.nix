@@ -139,6 +139,8 @@ in
       cc = "claude";
       oc = "opencode";
       ll = "eza -l --icons";
+      t = "tmux";
+      tk = "tmux kill-server";
       update = if pkgs.stdenv.isDarwin
         then "sudo darwin-rebuild switch --flake ~/.config/nix-config"
         else "nix run home-manager -- switch --flake ~/.config/nix-config#exedev";
