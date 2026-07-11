@@ -16,7 +16,9 @@ in
   home.sessionVariables = {
     LANG = lib.mkDefault "C.UTF-8";
     LC_ALL = lib.mkDefault "C.UTF-8";
-  };
+   EDITOR = "nvim";
+   VISUAL = "nvim";
+ };
 
   home.packages = with pkgs; [
     # Dev Languages
