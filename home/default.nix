@@ -3,7 +3,6 @@
 let
   llmuxPlugin = pkgs.callPackage ../opencode/llmux-plugin/default.nix {};
   llmuxPkg = llmux.packages.${pkgs.system}.default;
-  llmuxClaudePlugin = llmux.packages.${pkgs.system}.claude-plugin;
 in
 
 {
@@ -209,12 +208,6 @@ EOF
   # OpenCode plugin shim that reports session state to llmux.
   xdg.configFile."opencode/plugins/tmux-session-manager.js" = {
     source = "${llmuxPlugin}/share/opencode/plugins/tmux-session-manager.js";
-  };
-
-  # Claude Code plugin (lives in the llmux flake) that reports session state to llmux.
-  home.file.".claude/plugins/llm-session-manager" = {
-    source = llmuxClaudePlugin;
-    recursive = true;
   };
 
   # Amp plugin that reports session state to llmux.

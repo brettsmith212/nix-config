@@ -1,77 +1,86 @@
 /**
- * Amp plugin that tracks thread state (working/idle/waiting) on the tmux
- * session, for display in the llmux picker.
- *
- * Analogous to the OpenCode llmux plugin. Amp exposes a per-thread
- * `ThreadState` observable ('idle' | 'running' | 'awaiting-approval' |
- * 'error'); we subscribe to each thread's state stream and translate it
- * into `llmux state <working|waiting|idle>` calls.
- *
- * State mapping:
- *   running            -> working   (red, busy)
- *   awaiting-approval  -> waiting   (yellow, needs input)
- *   idle / error       -> idle      (green, done)
- *
- * The plugin process is long-lived and may host several threads (the main
- * interactive thread plus any background threads created by other plugins
- * via amp.createAgent). We aggregate across all of them, matching the
- * OpenCode plugin's semantics: waiting if any is waiting, else working if
- * any is running, else idle.
- *
- * `llmux state` resolves the tmux session from $TMUX_PANE, which Amp
- * inherits from the tmux session it was launched in. We use `amp.$`
- * (top-level Bun shell, not tied to a handler invocation) so shell calls
- * remain valid inside the long-lived observable callback.
+ * Keep llmux's tmux state in sync with Amp and expose the llmux control room
+ * in Amp's command palette.
  */
 import type { PluginAPI, ThreadID, ThreadState } from '@ampcode/plugin'
 
 type LlmuxState = 'working' | 'waiting' | 'idle'
 
-const threadStates = new Map<ThreadID, ThreadState>()
-const subscribed = new Set<ThreadID>()
-let lastPublished: LlmuxState | null = null
-
-function aggregate(): LlmuxState {
-  let working = false
-  let waiting = false
-  for (const s of threadStates.values()) {
-    if (s === 'awaiting-approval') waiting = true
-    else if (s === 'running') working = true
-  }
-  if (waiting) return 'waiting'
-  if (working) return 'working'
-  return 'idle'
-}
-
-async function publish(amp: PluginAPI): Promise<void> {
-  const next = aggregate()
-  if (next === lastPublished) return
-  lastPublished = next
-  try {
-    await amp.$`llmux state ${next}`
-  } catch {
-    // state updates are best-effort; never interrupt the agent
-  }
-}
-
 export default function (amp: PluginAPI) {
+  const threadStates = new Map<ThreadID, ThreadState>()
+  const subscribed = new Set<ThreadID>()
+  let lastPublished: LlmuxState | null = null
+  let publishing = false
+
+  function aggregate(): LlmuxState {
+    let working = false
+    for (const state of threadStates.values()) {
+      if (state === 'awaiting-approval' || state === 'error') return 'waiting'
+      if (state === 'running') working = true
+    }
+    return working ? 'working' : 'idle'
+  }
+
+  async function publish(): Promise<void> {
+    if (publishing) return
+    publishing = true
+    try {
+      while (true) {
+        const next = aggregate()
+        if (next === lastPublished) return
+        try {
+          await amp.$`llmux state ${next}`
+          lastPublished = next
+        } catch (error) {
+          amp.logger.log('Unable to update llmux state:', error)
+          return
+        }
+      }
+    } finally {
+      publishing = false
+    }
+  }
+
   amp.on('session.start', async (_event, ctx) => {
     const thread = ctx.thread
     if (subscribed.has(thread.id)) return
     subscribed.add(thread.id)
 
-    // Seed with the current state, then stream transitions.
+    let stateWasEmitted = false
+    thread.state.subscribe((state: ThreadState) => {
+      stateWasEmitted = true
+      threadStates.set(thread.id, state)
+      void publish()
+    })
+
     try {
       const current = await thread.state.get()
-      threadStates.set(thread.id, current)
-      await publish(amp)
-    } catch {
-      // best-effort
+      if (!stateWasEmitted) {
+        threadStates.set(thread.id, current)
+        await publish()
+      }
+    } catch (error) {
+      amp.logger.log('Unable to read Amp thread state:', error)
     }
-
-    thread.state.subscribe(async (state: ThreadState) => {
-      threadStates.set(thread.id, state)
-      await publish(amp)
-    })
   })
+
+  amp.registerCommand(
+    'llmux-open-picker',
+    {
+      title: 'Open agent control room',
+      category: 'llmux',
+      description: 'Monitor and switch managed LLM sessions in tmux.',
+      availability: process.env.TMUX_PANE
+        ? { type: 'enabled' }
+        : { type: 'disabled', reason: 'Amp is not running inside tmux' },
+    },
+    async (ctx) => {
+      try {
+        await ctx.$`llmux list`
+      } catch (error) {
+        amp.logger.log('Unable to open llmux control room:', error)
+        await ctx.ui.notify('Could not open the llmux agent control room.')
+      }
+    },
+  )
 }
