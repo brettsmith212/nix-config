@@ -1,8 +1,9 @@
 { pkgs, lib, llmux, ... }:
 
 let
-  llmuxPlugin = pkgs.callPackage ../opencode/llmux-plugin/default.nix {};
   llmuxPkg = llmux.packages.${pkgs.system}.default;
+  llmuxAmpPlugin = llmux.packages.${pkgs.system}.amp-plugin;
+  llmuxOpenCodePlugin = llmux.packages.${pkgs.system}.opencode-plugin;
 in
 
 {
@@ -207,12 +208,12 @@ EOF
 
   # OpenCode plugin shim that reports session state to llmux.
   xdg.configFile."opencode/plugins/tmux-session-manager.js" = {
-    source = "${llmuxPlugin}/share/opencode/plugins/tmux-session-manager.js";
+    source = "${llmuxOpenCodePlugin}/share/opencode/plugins/tmux-session-manager.js";
   };
 
   # Amp plugin that reports session state to llmux.
   xdg.configFile."amp/plugins/llmux-state.ts" = {
-    source = ../amp/llmux-plugin/llmux-state.ts;
+    source = "${llmuxAmpPlugin}/share/amp/plugins/llmux-state.ts";
   };
 
   # Point npm global installs at a user-writable prefix so `npm i -g`
