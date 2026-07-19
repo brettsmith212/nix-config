@@ -1,44 +1,44 @@
 ---
 name: review-inbox
-description: Processes the user's Obsidian GTD Inbox.md — matches lines to existing projects (with confirmation), defaults unmatched items to Next Actions, applies the two-minute rule, and keeps the inbox empty. Use when the user asks to process their inbox, clear their inbox, or run GTD triage.
+description: Clarifies and processes Obsidian Inbox.md items into GTD next actions, projects, waiting-for, someday/maybe, or non-actions. Use when asked to process, triage, or clear the GTD inbox.
 user_invocable: true
 ---
 
-You process the user's GTD inbox at:
-`/Users/brettsmith/Library/Mobile Documents/iCloud~md~obsidian/Documents/vault/Inbox.md`
+Process `$VAULT_ROOT/Inbox.md` into the user's GTD system. Read these first; never hardcode the vault path:
 
-Vault layout:
-- `Inbox.md` (root) — capture list you process
-- `GTD/Next Actions.md` — single-action tasks
-- `GTD/Waiting For.md` — blocked on someone else
-- `GTD/Someday Maybe.md` — not now, kept for later
-- `Projects/<name>.md` — multi-step outcomes; each has an `Outcome:` line and a `## Next actions` section
-- `Dashboard.md` — context views, do not edit
+- `GTD/How This Works.md` — source of truth
+- `GTD/Next Actions.md`, `GTD/Waiting For.md`, and `GTD/Someday Maybe.md`
+- `Projects/` and `Projects/Project Template.md`
 
-Context tags (pick exactly one per action, by where it gets done): `#church`, `#office`, `#home`, `#computer`. If unclear, omit and add `⚠ #tag`.
+Never edit `Dashboard.md`.
 
-## Procedure
+## Standard
 
-For each unchecked `- [ ]` line in Inbox.md, top to bottom:
+Clarify now so future-you does not have to think again. Every task must be one concise line with a visible action, specific object, and an obvious finish. It should be clear enough that another person could understand how to start and what “done” means.
 
-1. **Two-minute check.** If the action is clearly under two minutes and not part of a project, leave it in the inbox but prepend `⚡ do now — `. Skip to next line. The user does these themselves.
+Never move a vague capture, guess missing details, or turn a task into a paragraph. If one line contains several actions, treat it as a project and identify only its immediate next action.
 
-2. **Project reference.** If the bullet explicitly names a project (e.g. "for X project", "→ Project Name", "[[Project Name]]"), and a matching `Projects/<name>.md` exists, append the bullet (cleaned up, with one context tag) to that project's `## Next actions`. Do not fuzzy-match; only honor explicit references. If the named project file does not exist, treat as no project.
+## Workflow
 
-3. **Waiting / someday keywords.** "waiting on", "needs <x> first", "from <person>" → append to `GTD/Waiting For.md`. "someday", "maybe", "one day", "consider" → append to `GTD/Someday Maybe.md`.
+1. Read every non-scaffolding entry in `Inbox.md`, not only unchecked tasks. Treat unchecked tasks as captures; clarify the disposition of plain-text or checked entries instead of silently skipping them. Inspect candidate projects' outcomes and current next actions.
 
-4. **Default — Next Actions.** Append to `GTD/Next Actions.md` with one context tag inferred from wording. This is where most items go. If you guessed the tag, append ` ⚠ #tag`.
+2. Before editing files, resolve only uncertainties that affect the wording, destination, project, or context tag. Ask focused questions for all unclear items in one numbered batch and suggest a concise rewrite when the likely intent is evident. Wait for the answers; ask a follow-up only when an item is still not actionable.
 
-5. **Delete the line from Inbox.md** once moved. The inbox should end empty except for ⚡ do-now items.
+3. Classify each clarified item:
+   - **Do now:** a standalone action that truly takes under two minutes. Ask the user to do it. Remove it only after they confirm completion; otherwise route it as a next action.
+   - **Next action:** one executable action → `GTD/Next Actions.md`.
+   - **Project:** an outcome requiring multiple actions → an existing or new `Projects/<name>.md`, containing a concrete `Outcome:` and only the immediate next action.
+   - **Waiting for:** someone else owns the next move → `GTD/Waiting For.md`, naming the person and expected result.
+   - **Someday/maybe:** intentionally deferred → `GTD/Someday Maybe.md`.
+   - **No action:** delete it, or ask where to file it as reference if it is worth keeping.
+   - **Calendar:** must occur at a particular date or time, rather than merely having a due date → tell the user what should be scheduled and remove it only after they confirm scheduling.
 
-## Hard rules
+4. Include ambiguous project assignments and proposed new projects in the clarification batch and confirm them before editing; do not require separate confirmation for an unambiguous project classification. For a new project, derive a short outcome-based name and create it from `Projects/Project Template.md`. If an existing project already has a current next action, ask whether the inbox item replaces it or belongs in project notes; do not add a second next action.
 
-- Never edit `Dashboard.md`.
-- Never create a new project automatically. If a bullet explicitly names a project that does not exist, leave it in Next Actions with `⚠ needs project: <name>` and let the user create the project later.
-- One context tag per action. No priority tags. No dates.
-- Make wording concrete before moving: rewrite "stuff for trip" as "Book flights for trip". If you reworded, append ` ⚠ reworded` so the user can verify.
-- Do not check off items. Moving is not doing.
+5. Add exactly one context tag to each executable next action: `#church`, `#office`, `#home`, or `#computer`. Choose where the action can actually be done, not its subject. Preserve an existing context tag only if it fits where the clarified action can be done; do not treat an area or subject prefix as a context. If uncertain, ask instead of guessing. Waiting-for and someday/maybe entries need no context tag.
 
-## Closing
+6. After clarification and confirmation, make all moves. Preserve task syntax (`- [ ]`), avoid duplicates, and remove empty placeholder tasks. Keep each executable task to one line, but preserve all material details—links, dates, names, constraints, and useful project notes—in the destination or a user-chosen reference note. Delete an inbox entry only after its complete content was preserved or the user confirmed it done, scheduled, or discarded; leave unresolved captures unchanged.
 
-Report one line: counts of items moved to each destination, and ⚡ do-now count. Nothing else.
+## Finish
+
+Aim for an empty inbox, but never sacrifice clarity to empty it. Report concise counts by destination, projects created, items completed/scheduled/deleted, and anything still awaiting clarification.
