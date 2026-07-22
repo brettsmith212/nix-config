@@ -34,6 +34,8 @@ Never move a vague capture, guess missing details, or turn a task into a paragra
    - **No action:** delete it, or ask where to file it as reference if it is worth keeping.
    - **Calendar:** must occur at a particular date or time, rather than merely having a due date → tell the user what should be scheduled and remove it only after they confirm scheduling.
 
+Only active projects belong in `Projects/`. Completed project notes belong in `Archive/Projects/`, outside the active tree so Dataview queries do not include them.
+
 4. Always ask before creating a new project, even when the multi-action intent is unambiguous. Include the proposed project name, area, and outcome in the clarification batch and confirm before editing. For a new project, derive a short outcome-based name and create it from `Projects/Project Template.md`. Use an existing area from `GTD/Areas of Focus.md`; ask before introducing a new area. If an existing project already has a current next action, ask whether the inbox item replaces it or belongs in the project's `## Plan`; do not add a second executable next action.
 
    Preserve the template structure exactly. State `outcome` as the completed result, not the work to perform:
@@ -55,7 +57,7 @@ Never move a vague capture, guess missing details, or turn a task into a paragra
    - Future or dependent step
    ```
 
-5. Add at least one dashboard-supported context tag to each executable next action: `#computer`, `#home`, or `#church` when the user must be at church. Choose where or how the action can actually be done, not its subject. Preserve an existing context tag only if it fits where the clarified action can be done; do not treat an area or subject prefix as a context. If a different context would be useful, propose the context and corresponding dashboard change instead of silently introducing it. If uncertain, ask instead of guessing. Waiting-for and someday/maybe entries need no context tag.
+5. Add at least one dashboard-supported context tag to each executable next action: `#computer`, `#home`, `#errands`, or `#church` when the user must be at church. Choose where or how the action can actually be done, not its subject. Preserve an existing context tag only if it fits where the clarified action can be done; do not treat an area or subject prefix as a context. If a different context would be useful, propose the context and corresponding dashboard change instead of silently introducing it. If uncertain, ask instead of guessing. Waiting-for and someday/maybe entries need no context tag.
 
 6. After clarification and confirmation, make all moves. Preserve task syntax (`- [ ]`), avoid duplicates, and remove empty placeholder tasks. Keep each executable task to one line, but preserve all material details—links, dates, names, constraints, and useful project notes—in the destination or a user-chosen reference note. Delete a checked inbox task immediately. Delete any other inbox entry only after its complete content was preserved or the user confirmed it done, scheduled, or discarded; leave unresolved captures unchanged.
 

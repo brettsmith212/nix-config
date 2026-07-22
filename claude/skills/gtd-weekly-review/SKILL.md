@@ -14,7 +14,7 @@ Use the full workflow when the user asks for a weekly or general GTD review. If 
 
 - Clarify commitments so the user will not have to reinterpret them later.
 - Preserve one canonical checkbox for every action; never copy an action onto the dashboard.
-- Every note in `Projects/` is active and has exactly one unchecked next action.
+- Every note in `Projects/` is active and has exactly one unchecked next action. After the user confirms a project's outcome is complete, move its note to `Archive/Projects/` so active-project Dataview queries exclude it.
 - Future project steps are plain bullets under `## Plan`, not task checkboxes.
 - `area` says which ongoing responsibility a project supports. Context tags say where or how an action can be done.
 - Never invent a commitment, next action, project outcome, area, or project completion. Present proposed changes and obtain the user's approval first.
@@ -55,7 +55,7 @@ Inspect every Markdown note in `Projects/` except `Project Template.md`. Check t
 - keeps future or dependent steps as plain bullets;
 - still represents an active commitment.
 
-Present exceptions in one compact table. For a project with no next action, propose one only when it follows unambiguously from the plan; otherwise ask what must happen next. For multiple unchecked actions, ask which one is current and convert the others to plan bullets after approval. Ask before declaring, deleting, archiving, pausing, or creating a project.
+Present exceptions in one compact table. For a project with no next action, ask whether its outcome is complete or what must happen next; propose a next action only when it follows unambiguously from the plan. Move a confirmed completed project to `Archive/Projects/`. For multiple unchecked actions, ask which one is current and convert the others to plan bullets after approval. Ask before declaring, deleting, archiving, pausing, or creating a project.
 
 ### 4. Get Current: Waiting For
 
