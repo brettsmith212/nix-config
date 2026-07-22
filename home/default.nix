@@ -207,6 +207,30 @@ EOF
   home.file.".tmux.conf".source = ../tmux/tmux.conf;
 
   # OpenCode plugin shim that reports session state to llmux.
+  xdg.configFile."opencode/opencode.jsonc" = {
+    force = true;
+    text = builtins.toJSON {
+      "$schema" = "https://opencode.ai/config.json";
+      permission = {
+        external_directory = {
+          "~/.config/nix-config/**" = "allow";
+        } // lib.optionalAttrs pkgs.stdenv.isDarwin {
+          "{env:VAULT_ROOT}/**" = "allow";
+        };
+        read = {
+          "~/.config/nix-config/**" = "allow";
+        } // lib.optionalAttrs pkgs.stdenv.isDarwin {
+          "{env:VAULT_ROOT}/**" = "allow";
+        };
+        edit = {
+          "~/.config/nix-config/**" = "allow";
+        } // lib.optionalAttrs pkgs.stdenv.isDarwin {
+          "{env:VAULT_ROOT}/**" = "allow";
+        };
+      };
+    };
+  };
+
   xdg.configFile."opencode/plugins/tmux-session-manager.js" = {
     source = "${llmuxOpenCodePlugin}/share/opencode/plugins/tmux-session-manager.js";
   };
