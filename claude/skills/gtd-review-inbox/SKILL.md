@@ -17,6 +17,8 @@ Never edit `Dashboard.md`.
 
 Clarify now so future-you does not have to think again. Every task must be one concise line with a visible action, specific object, and an obvious finish. It should be clear enough that another person could understand how to start and what “done” means. The user owns every new commitment: never create, reword, or route an executable action without their explicit approval.
 
+If the user supplies or confirms a due date, preserve it when routing the action and append `📅 YYYY-MM-DD` at the end of the task line, after all context tags. Never infer a due date.
+
 Never move a vague capture, guess missing details, or turn a task into a paragraph. If one line contains several actions, do not automatically create a project. Ask the user whether they want a project created; if yes, create one from `Projects/Project Template.md` with the next action. If no, add each action as a separate single next action to `GTD/Next Actions.md` with the appropriate context tag.
 
 ## Workflow

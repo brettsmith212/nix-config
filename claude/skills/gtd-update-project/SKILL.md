@@ -29,6 +29,7 @@ If the user did not name a project, ask which project to update. Resolve casual 
 - Keep the canonical project action in the project note, never in `GTD/Next Actions.md`.
 - Keep future or dependent steps as plain bullets under `## Plan`, never as task checkboxes.
 - Write each next action as one concise line with a visible action, specific object, obvious finish, and at least one supported context: `#computer`, `#home`, `#errands`, or `#church` when the user must be at church.
+- Add or preserve a due date only when the user supplies or confirms it; format it as `📅 YYYY-MM-DD` at the end of the task line, after all context tags. Never infer a due date.
 - Preserve completed checkboxes as project history unless the user asks to remove them.
 - Never infer project completion solely because its current action is complete.
 

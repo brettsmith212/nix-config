@@ -17,6 +17,7 @@ Use the full workflow when the user asks for a weekly or general GTD review. If 
 - Every note in `Projects/` is active and has exactly one unchecked next action. After the user confirms a project's outcome is complete, move its note to `Archive/Projects/` so active-project Dataview queries exclude it.
 - Future project steps are plain bullets under `## Plan`, not task checkboxes.
 - `area` says which ongoing responsibility a project supports. Context tags say where or how an action can be done.
+- Preserve due dates as `📅 YYYY-MM-DD` at the end of task lines, after all context tags. Add or change one only when the user supplies or confirms the date; never infer it.
 - Never invent a commitment, next action, project outcome, area, or project completion. Present proposed changes and obtain the user's approval first.
 - Ask related questions in one compact batch. Avoid walking through obvious items one at a time.
 
