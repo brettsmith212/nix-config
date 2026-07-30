@@ -140,6 +140,7 @@ in
     shellAliases = {
       cc = "claude";
       oc = "opencode";
+      notes = "cd \"$VAULT_ROOT\"";
       ll = "eza -l --icons";
       t = "tmux";
       tk = "tmux kill-server";
