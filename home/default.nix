@@ -142,8 +142,9 @@ in
       oc = "opencode";
       notes = "cd \"$VAULT_ROOT\"";
       ll = "eza -l --icons";
-      t = "tmux";
-      tk = "tmux kill-server";
+       t = "tmux";
+       ta = "tmux attach -t";
+       tk = "tmux kill-server";
       update = if pkgs.stdenv.isDarwin
         then "sudo darwin-rebuild switch --flake ~/.config/nix-config"
         else "nix run home-manager -- switch --flake ~/.config/nix-config#exedev";
