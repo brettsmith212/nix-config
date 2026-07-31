@@ -38,6 +38,7 @@
       "ghostty"
       "hammerspoon"
       "obsidian"
+      "raycast"
       "zoom"
       "docker-desktop"
     ];
