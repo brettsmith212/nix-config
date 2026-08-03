@@ -109,6 +109,18 @@ After editing any config files, rebuild with:
 sudo darwin-rebuild switch --flake ~/.config/nix-config
 ```
 
+### Apple Reminders for GTD
+
+On macOS, the Home Manager configuration installs `gtd-reminder` for date-triggered GTD incubation:
+
+```sh
+gtd-reminder --title "Reconsider conference registration" --date 2026-09-01 --time 09:00
+```
+
+Optional flags are `--time HH:MM`, `--notes TEXT`, and `--list NAME`. Without `--list`, the command uses the default Apple Reminders list. A date without `--time` creates an all-day reminder.
+
+The first invocation may prompt for permission to control Reminders. Allow the terminal or agent application under **System Settings → Privacy & Security → Automation**. The command exits without success if permission is denied, so inbox captures should not be removed until reminder creation succeeds.
+
 ### Linux (exe.dev and friends)
 
 The Linux build targets the `exedev` user on `x86_64-linux` (the default exeuntu image on [exe.dev](https://exe.dev)).
