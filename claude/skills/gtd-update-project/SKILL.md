@@ -1,65 +1,88 @@
 ---
 name: gtd-update-project
-description: Advances one Obsidian GTD project after a next action is completed by confirming the outcome, selecting the next action, or archiving the project. Use when asked to update or advance a named GTD project, choose its next action, or process a project needing attention.
+description: Advances one active Obsidian GTD project by processing completed actions, confirming the outcome, choosing linked next actions, handling waiting-for or calendar items, or archiving the project. Use when asked to update, advance, or complete a named GTD project.
 user_invocable: true
 ---
 
 # GTD Update Project
 
-Advance one active project without turning its plan into a second task list.
+Advance one project while keeping outcomes, actions, and support in their proper places.
 
 ## Read First
 
 Locate the vault from the current workspace; never hardcode its path. Read:
 
 - `GTD/How This Works.md` as the source of truth
-- `GTD/Areas of Focus.md`
+- `GTD/Next Actions.md`
 - `GTD/Waiting For.md`
 - the complete named note in `Projects/`
-- any note explicitly linked by the project that is necessary to understand its outcome or plan
+- only linked support notes needed to understand the outcome or plan
 
-Never edit `Dashboard.md`. Do not inspect or modify unrelated projects.
+If the user did not name a project, ask which one to update. Resolve partial names against `Projects/` and ask if more than one note could match. Do not inspect or modify unrelated projects.
 
-If the user did not name a project, ask which project to update. Resolve casual or partial names against `Projects/`; ask if more than one note could match.
+## Rules
 
-## Standard
-
-- The user owns every commitment. Never create, reword, replace, or route an executable action without explicit approval.
-- Keep exactly one unchecked executable next action in an active project note.
-- Keep the canonical project action in the project note, never in `GTD/Next Actions.md`.
-- Keep future or dependent steps as plain bullets under `## Plan`, never as task checkboxes.
-- Write each next action as one concise line with a visible action, specific object, obvious finish, and at least one supported context: `#computer`, `#home`, `#errands`, or `#church` when the user must be at church.
-- Add or preserve a due date only when the user supplies or confirms it; format it as `📅 YYYY-MM-DD` at the end of the task line, after all context tags. Never infer a due date.
-- Preserve completed checkboxes as project history unless the user asks to remove them.
-- Never infer project completion solely because its current action is complete.
+- The user owns every commitment. Obtain explicit approval before creating, replacing, rerouting, or deleting an action, or declaring a project complete.
+- An active project has a clear completed-state outcome and at least one available action in `GTD/Next Actions.md` that links to it.
+- Available actions never live in the project note. Place them under `## At Computer`, `## At Home`, `## Errands`, `## Read / Review`, or `## At Church`; do not use context tags.
+- More than one linked action is allowed when each is independently available. Do not manufacture parallel actions merely to make a project look active.
+- Keep future or dependent steps as plain bullets under the project's `## Plan`.
+- Use `GTD/Waiting For.md` when another person owns the next move.
+- Put appointments and day-specific information in Apple Calendar. Put actions or follow-ups that must happen or reappear on a specific day in Apple Reminders. Do not add due dates to Obsidian actions.
+- Do not infer that the project is complete merely because an action was completed.
 
 ## Workflow
 
-1. Inspect the project's `area`, `outcome`, current and completed tasks, and `## Plan`. Report malformed metadata or multiple unchecked tasks before proposing another action.
+1. Inspect the project's outcome, plan, support, all unchecked actions in `GTD/Next Actions.md` that link to the project, and all linked entries in `GTD/Waiting For.md`. Report malformed or missing project sections before proposing changes.
 
 2. Establish the current state in one compact question batch:
-   - Confirm which current action was completed if that is not already clear from the note or request.
-   - Ask what result, information, or constraint came from that action when it affects what can happen next.
-   - Ask whether the stated project outcome is now complete.
 
-3. If the outcome is complete, propose moving the note to `Archive/Projects/`. Archive it only after explicit confirmation. Preserve its outcome, completed tasks, and plan as history. Create the archive directories if needed.
+- Which action was completed, if not already clear?
+- What result, information, or constraint came from it?
+- Is the stated project outcome now complete?
+- Are the project's other linked actions still available and relevant?
 
-4. If the outcome is not complete, inspect the plan for actions that are available now. Do not promote a blocked or dependent step. When several actions are available, rank them by:
-   - removing a blocker or satisfying a prerequisite;
-   - reducing the largest relevant uncertainty;
-   - making the most direct progress toward the stated outcome;
-   - honoring a real deadline or constraint.
+3. When an action is confirmed complete, remove it from `GTD/Next Actions.md`. Do not copy completed actions into the project note by default. Preserve a result only when it is useful project support or reference information.
 
-5. Present one to three candidate next actions in a compact Markdown table with exact wording, context, source plan item, and a brief reason. Recommend one, but ask the user to approve or revise it. If the plan does not reveal a concrete next action, ask what must happen next instead of guessing.
+4. If the outcome is complete:
 
-6. After approval:
-   - mark the prior action complete only if the user confirmed completion and it is not already checked;
-   - add exactly one approved unchecked action under `## Next action`;
-   - remove the corresponding plain bullet from `## Plan` when it was promoted, avoiding duplication;
-   - preserve all remaining planning details and completed actions.
+- identify any remaining linked next actions or waiting-for entries;
+- ask whether each should be removed, retained as a standalone commitment, or moved to another project;
+- verify that the destination filename does not already exist, resolving any collision with the user rather than overwriting it;
+- after approval, move the project note to `Archive/Projects/`;
+- do not edit `GTD/Projects.md`; its Dataview list updates from the folder move.
 
-7. If someone else owns the next move, propose a `GTD/Waiting For.md` entry naming the person and expected result. Ask whether another independent project action is available; do not invent one merely to remove the project from `Projects Needing Attention`.
+If the outcome is incomplete but no longer an active commitment, ask whether it remains desirable. If so, add the outcome to `GTD/Someday Maybe.md`, resolve its linked actions and waiting-for entries, and archive or remove the project note after approval. If it is no longer desirable, resolve those commitments and remove or archive the note after approval. Check for destination collisions before archiving.
+
+5. If the outcome is not complete, identify what must happen next. Inspect the plan and newly learned information, but do not promote a blocked or dependent step. Rank candidate actions by:
+
+- removing a blocker or satisfying a prerequisite;
+- reducing the largest relevant uncertainty;
+- making the most direct progress toward the outcome;
+- honoring a genuine calendar constraint.
+
+6. Present up to three candidate actions with exact wording, context heading, source plan item, and a short reason. Recommend one, then obtain approval. If the next move cannot be derived safely, ask rather than guessing.
+
+7. Apply the approved disposition:
+
+- **Available now:** add the checkbox to the chosen heading in `GTD/Next Actions.md` and end it with the project link.
+- **Future/dependent:** keep it as a plain plan bullet.
+- **Delegated:** add the person, expected result, and project link to `GTD/Waiting For.md`; identify an independent project action if one is available. If none exists, do not pretend the project passes the next-action check: ask the user to define an action, defer the project, or explicitly leave the project as an unresolved system gap.
+- **Appointment or day-specific information:** give the user the exact Apple Calendar entry and remove any obsolete Obsidian action only after they confirm scheduling.
+- **Day-specific action or follow-up:** create an Apple Reminder after confirming the exact date and any time.
+
+When promoting a plan item, remove or revise the corresponding plain bullet so the action is not duplicated.
+
+8. Create an approved reminder with:
+
+```sh
+gtd-reminder --title <title> --date YYYY-MM-DD
+```
+
+Add `--time HH:MM` only when confirmed. Remove an Obsidian action only after the command succeeds. If the command is unavailable, retain the action until the user confirms manual creation.
+
+Pass every user-provided value as a separate, shell-quoted argument. Never interpolate reminder text into an unquoted shell command.
 
 ## Finish
 
-Report the completed action, the approved new next action and context, any plan item promoted, whether the project was archived, and any unresolved blocker. A successful update leaves an active project with exactly one unchecked action or archives a confirmed completed project.
+Report the completed or removed action, the project's outcome status, new linked actions and their contexts, waiting-for or calendar changes, plan items promoted, whether the project was archived or deferred, and any unresolved blocker. A successful active project has a clear outcome and at least one linked available action. If it does not, report that invariant as unresolved rather than calling the update successful.

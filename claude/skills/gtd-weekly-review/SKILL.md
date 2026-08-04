@@ -1,92 +1,117 @@
 ---
 name: gtd-weekly-review
-description: Reviews an Obsidian GTD system across next actions, projects, waiting-for, someday/maybe, and areas of focus. Use when asked for a GTD weekly review or to review GTD projects, areas, or commitments.
+description: Runs a GTD Weekly Review across the Obsidian inbox, context-based next actions, active projects, waiting-for, someday/maybe, and the Apple Calendar and Reminders hard landscape. Use when asked for a weekly GTD review or a review of GTD commitments.
 user_invocable: true
 ---
 
 # GTD Weekly Review
 
-Run a trusted GTD review without adding unnecessary structure. Read `GTD/How This Works.md` first and treat it as the source of truth. Locate the vault from the current workspace; never hardcode its path.
+Restore trust in the system by getting clear, current, and creative. Locate the vault from the current workspace; never hardcode its path.
 
-Use the full workflow when the user asks for a weekly or general GTD review. If the user requests only projects, waiting-for, someday/maybe, or areas, run only that phase plus the finish step. Do not create separate systems or metadata for a problem the current notes already solve.
-
-## Review Standard
-
-- Clarify commitments so the user will not have to reinterpret them later.
-- Preserve one canonical checkbox for every action; never copy an action onto the dashboard.
-- Every note in `Projects/` is active and has exactly one unchecked next action. After the user confirms a project's outcome is complete, move its note to `Archive/Projects/` so active-project Dataview queries exclude it.
-- Future project steps are plain bullets under `## Plan`, not task checkboxes.
-- `area` says which ongoing responsibility a project supports. Context tags say where or how an action can be done.
-- Preserve due dates as `📅 YYYY-MM-DD` at the end of task lines, after all context tags. Add or change one only when the user supplies or confirms the date; never infer it.
-- Never invent a commitment, next action, project outcome, area, or project completion. Present proposed changes and obtain the user's approval first.
-- Ask related questions in one compact batch. Avoid walking through obvious items one at a time.
+Use the full workflow for a weekly or general GTD review. If the user requests only one list, run that phase plus the finish step.
 
 ## Read First
 
-- `GTD/How This Works.md`
+- `GTD/How This Works.md` as the source of truth
+- `Inbox.md`
 - `GTD/Next Actions.md`
 - `GTD/Projects.md`
 - `GTD/Waiting For.md`
 - `GTD/Someday Maybe.md`
-- `GTD/Areas of Focus.md`
-- `Projects/` and `Projects/Project Template.md`
-- `Inbox.md`
+- every Markdown note directly inside `Projects/` except `Project Template.md`
+- project support notes only when needed to clarify a project's state
 
-Do not edit `Dashboard.md` during a review unless the user explicitly asks to change the system itself.
+## Review Standard
+
+- The user owns every commitment. Present proposed changes and obtain approval before creating, materially rewriting, rerouting, scheduling, deleting, or archiving commitments.
+- Ask related questions in compact batches rather than reviewing obvious items one at a time.
+- `Projects/` is the active project inventory. `GTD/Projects.md` is generated and should not be manually edited.
+- Every active project has a clear outcome and at least one incomplete action in `GTD/Next Actions.md` that links to it.
+- Available actions exist only in `GTD/Next Actions.md` under the five established context headings. Project notes contain outcomes, plans, and support, not executable checkboxes.
+- Apple Calendar and Apple Reminders are the hard landscape. Do not keep date-bound commitments or due-date syntax in Obsidian Next Actions.
+- Future and dependent steps are plain project-plan bullets, not commitments presented as available work.
+- Aim for a trusted system, not a cosmetically empty one. Leave unclear items unchanged and state what remains unresolved.
 
 ## Full Workflow
 
 ### 1. Get Clear
 
-Confirm that daily inbox processing is current. If `Inbox.md` contains unresolved captures left behind, load and follow the `gtd-review-inbox` skill; its clarification and approval rules govern that catch-up work. Do not turn the weekly review into routine inbox processing.
+Check `Inbox.md`. If unresolved captures remain, follow the `gtd-review-inbox` workflow to clarify and process them. Do not silently route captures during the review.
 
-### 2. Get Current: Next Actions
+Ask whether there are loose papers, notes, messages, or other collection points that still need to be captured in `Inbox.md` before continuing.
 
-Review `GTD/Next Actions.md` for completed tasks, duplicates, vague wording, and contexts that describe a subject rather than where or how work can be done.
+### 2. Review The Hard Landscape
 
-Delete completed tasks. Propose any rewrites, rerouting, or new commitments before editing them.
+Ask the user to review upcoming Apple Calendar and Apple Reminders items. Confirm that:
 
-### 3. Get Current: Projects
+- appointments, events, and day-specific information are current;
+- reminders represent actions or follow-ups that must happen or reappear on a specific day;
+- completed or obsolete items are removed;
+- any newly discovered commitments are captured for clarification.
 
-Inspect every Markdown note in `Projects/` except `Project Template.md`. Check that each project:
+Do not move ordinary available actions onto a date merely to make them visible.
 
-- has a concrete `area` found in `GTD/Areas of Focus.md`;
-- has an outcome stated as a finished result;
-- has exactly one unchecked, physical next action;
-- keeps future or dependent steps as plain bullets;
-- still represents an active commitment.
+### 3. Review Next Actions
 
-Present exceptions in one compact table. For a project with no next action, ask whether its outcome is complete or what must happen next; propose a next action only when it follows unambiguously from the plan. Move a confirmed completed project to `Archive/Projects/`. For multiple unchecked actions, ask which one is current and convert the others to plan bullets after approval. Ask before declaring, deleting, archiving, pausing, or creating a project.
+Review `GTD/Next Actions.md` for:
 
-### 4. Get Current: Waiting For
+- completed or obsolete tasks;
+- duplicates;
+- vague wording without a visible action, specific object, or obvious finish;
+- actions under the wrong context heading;
+- project actions missing their project link;
+- date-bound items that belong in Apple Calendar or Reminders.
 
-Review every item in `GTD/Waiting For.md`. Each entry should name who owns the next move and the expected result. Ask whether it is still pending, needs a follow-up action, is complete, or should be dropped. Apply confirmed changes and route any follow-up to the appropriate project or next-actions list.
+Remove confirmed completed tasks. Propose any rewrite or rerouting before applying it.
 
-### 5. Get Creative: Someday/Maybe
+### 4. Review Projects
 
-Review `GTD/Someday Maybe.md` as possibilities, not commitments. In one batch, ask whether listed items should remain deferred, become active, or be removed. Activating an item still requires explicit approval for the resulting project or next action.
+Inspect every note directly inside `Projects/` except `Project Template.md`. For each project, verify that it:
 
-### 6. Get Perspective: Areas of Focus
+- states a concrete outcome as a completed result;
+- remains an active commitment;
+- has at least one incomplete action in `GTD/Next Actions.md` linking to it;
+- keeps future or dependent steps as plain bullets under `## Plan`;
+- links useful project material under `## Support`.
 
-Review each area in `GTD/Areas of Focus.md`. An area is an ongoing responsibility, not a project and not something to complete. Ask:
+Also identify linked next actions whose project note does not exist.
 
-> Is this area appropriately maintained, or does something here need a project, next action, calendar entry, or conscious acceptance?
+Present all exceptions in one compact table. For a project without a next action, first ask whether its outcome is complete. If it remains active, derive candidate actions from its outcome and plan only when safe; otherwise ask what must happen next. Use the `gtd-update-project` workflow to advance or archive it.
 
-Do not require every area to have an active project. Add, remove, rename, or rewrite an area only with the user's approval.
+If an incomplete project is no longer an active commitment but remains desirable, move its outcome to `GTD/Someday Maybe.md`, resolve its linked actions and waiting-for entries, and archive or remove its project note after approval.
 
-### 7. Mind Sweep
+Move a confirmed completed project to `Archive/Projects/` only after resolving its remaining linked actions and waiting-for entries. Before any archive move, verify that the destination filename does not exist and resolve collisions with the user rather than overwriting an existing note. The generated Projects list requires no manual update.
 
-Ask once whether anything else has the user's attention. Capture new items in `Inbox.md`, then use the `gtd-review-inbox` workflow for those captures. Do not casually route them during the review.
+### 5. Review Waiting For
+
+Review every entry in `GTD/Waiting For.md`. Each should name who owns the next move, the expected result, and the related project when applicable. Ask whether it:
+
+- is still pending;
+- needs a follow-up action or date-specific Apple Reminder;
+- is complete;
+- is obsolete.
+
+Apply confirmed changes. Route an available follow-up action to the appropriate Next Actions context with its project link.
+
+### 6. Review Someday/Maybe
+
+Review `GTD/Someday Maybe.md` as possibilities, not commitments. In one batch, ask which items should remain deferred, be removed, become standalone next actions, or become committed projects. Activating an item requires a clarified outcome and explicit approval.
+
+### 7. Get Creative
+
+Ask once: "What else has your attention?"
+
+Capture each answer in `Inbox.md`, then follow the `gtd-review-inbox` workflow. Do not casually add unclarified ideas to Projects or Next Actions.
 
 ## Finish
 
 Summarize:
 
-- inbox items processed or still unresolved;
-- completed actions removed;
-- projects advanced, completed, paused, or still missing a next action;
-- waiting-for and someday/maybe decisions;
-- area concerns discovered;
-- calendar items the user still needs to schedule.
-
-Aim for a trusted system, not a cosmetically empty one. If an item remains unclear, leave it unchanged and state the unresolved decision.
+- inbox items processed or unresolved;
+- calendar or reminder changes still needed;
+- completed or obsolete actions removed;
+- actions clarified, rerouted, or linked to projects;
+- projects advanced, archived, or still missing a next action;
+- waiting-for decisions and follow-ups;
+- someday/maybe decisions;
+- new captures and unresolved questions.
