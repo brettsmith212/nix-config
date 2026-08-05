@@ -4,7 +4,6 @@ let
   llmuxPkg = llmux.packages.${pkgs.system}.default;
   llmuxAmpPlugin = llmux.packages.${pkgs.system}.amp-plugin;
   llmuxOpenCodePlugin = llmux.packages.${pkgs.system}.opencode-plugin;
-  gtdReminder = import ./gtd-reminder.nix { inherit pkgs; };
 in
 
 {
@@ -50,9 +49,6 @@ in
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     # iOS tooling (macOS only)
     idb-companion
-
-    # Apple Reminders integration for date-triggered GTD incubation
-    gtdReminder
   ];
 
   programs.zoxide.enable = true;

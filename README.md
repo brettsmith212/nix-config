@@ -111,15 +111,16 @@ sudo darwin-rebuild switch --flake ~/.config/nix-config
 
 ### Apple Reminders for GTD
 
-On macOS, the Home Manager configuration installs `gtd-reminder` for date-triggered GTD incubation:
+On macOS, nix-darwin installs `keith/formulae/reminders-cli` for date-triggered GTD incubation. The executable is named `reminders`. List the available destination lists, then create a reminder in one of them:
 
 ```sh
-gtd-reminder --title "Reconsider conference registration" --date 2026-09-01 --time 09:00
+reminders show-lists
+reminders add "Reminders" "Reconsider conference registration" --due-date "2026-09-01 09:00"
 ```
 
-Optional flags are `--time HH:MM`, `--notes TEXT`, and `--list NAME`. Without `--list`, the command uses the default Apple Reminders list. A date without `--time` creates an all-day reminder.
+The list argument is required; the CLI has no default-list option. A date-only `--due-date "YYYY-MM-DD"` creates an all-day reminder. Include a time in the same value only when it has been confirmed. Use `--notes <text>` to attach notes.
 
-The first invocation may prompt for permission to control Reminders. Allow the terminal or agent application under **System Settings → Privacy & Security → Automation**. The command exits without success if permission is denied, so inbox captures should not be removed until reminder creation succeeds.
+The first invocation may prompt for permission to access Reminders. Allow the terminal or agent application under **System Settings → Privacy & Security → Reminders**. The command exits without success if permission is denied, so inbox captures should not be removed until reminder creation succeeds.
 
 ### Linux (exe.dev and friends)
 

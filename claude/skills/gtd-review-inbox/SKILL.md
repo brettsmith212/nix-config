@@ -27,7 +27,7 @@ Locate the vault from the current workspace; never hardcode its path. Read:
 - The user owns every commitment. Obtain explicit approval before creating, materially rewording, routing, scheduling, delegating, or discarding an unresolved item. Ask related questions in one compact batch.
 - Clarify what an item means, the desired outcome, and the next physical, visible action before deciding where it belongs.
 - A project is a committed outcome requiring more than one action. Every project needs a clear outcome and at least one linked, available action in `GTD/Next Actions.md`.
-- Available actions exist only in `GTD/Next Actions.md`, under `## At Computer`, `## At Home`, `## Errands`, `## Read / Review`, or `## At Church`. Do not use context tags.
+- Available actions exist only in `GTD/Next Actions.md`, under `## On Phone`, `## At Computer`, `## At Home`, `## Errands`, `## Read / Review`, or `## At Church`. Do not use context tags.
 - End every project-related next action with its project link, such as `[[Job Search]]`.
 - Project notes contain `## Outcome`, `## Plan`, and `## Support`. Plans are optional future or dependent steps written as plain bullets, never task checkboxes.
 - Information belongs in `Reference/` or project support, not in an action list. If a capture contains information and an action, preserve and route each part separately.
@@ -88,13 +88,19 @@ Add the approved first action to `GTD/Next Actions.md` with a link to the new pr
 
 7. For an existing project, determine whether the capture is another independently available action, a future/dependent plan item, support material, or a replacement for an obsolete action. Do not turn the project plan into a task list.
 
-8. For an approved Apple Reminder, run:
+8. For an approved Apple Reminder, first confirm its destination list. If necessary, discover available list names with:
 
 ```sh
-gtd-reminder --title <title> --date YYYY-MM-DD
+reminders show-lists
 ```
 
-Add `--time HH:MM` only when the user supplied or confirmed a time. A reminder without a time is all-day. Optional arguments are `--notes <text>` and `--list <name>`. Use the default list unless the user names another. Remove the inbox capture only after the command succeeds. If `gtd-reminder` is unavailable, leave the capture until the user confirms manual creation.
+The CLI requires a list and has no default-list option. After the user confirms the exact list, title, date, and any time, run:
+
+```sh
+reminders add <list> <title> --due-date <date>
+```
+
+Use `YYYY-MM-DD` for a confirmed date-only reminder; it creates an all-day reminder. When the user confirms a time, pass a single date-and-time value such as `YYYY-MM-DD HH:MM` to `--due-date`. Add `--notes <text>` only when needed. Remove the inbox capture only after the command succeeds. If `reminders` is unavailable, leave the capture until the user confirms manual creation.
 
 Pass every user-provided value as a separate, shell-quoted argument. Never interpolate reminder text into an unquoted shell command.
 

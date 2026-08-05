@@ -14,8 +14,16 @@
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
 
+    taps = [
+      {
+        name = "keith/formulae";
+        trusted = true;
+      }
+    ];
+
     brews = [
       "dockutil"
+      "reminders-cli"      # Apple Reminders CLI used by the GTD skills
       "xcodegen"           # iOS/macOS project generation from project.yml
       "xcode-build-server" # sourcekit-lsp ↔ xcodebuild bridge for nvim
 

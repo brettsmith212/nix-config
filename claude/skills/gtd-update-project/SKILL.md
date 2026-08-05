@@ -24,7 +24,7 @@ If the user did not name a project, ask which one to update. Resolve partial nam
 
 - The user owns every commitment. Obtain explicit approval before creating, replacing, rerouting, or deleting an action, or declaring a project complete.
 - An active project has a clear completed-state outcome and at least one available action in `GTD/Next Actions.md` that links to it.
-- Available actions never live in the project note. Place them under `## At Computer`, `## At Home`, `## Errands`, `## Read / Review`, or `## At Church`; do not use context tags.
+- Available actions never live in the project note. Place them under `## On Phone`, `## At Computer`, `## At Home`, `## Errands`, `## Read / Review`, or `## At Church`; do not use context tags.
 - More than one linked action is allowed when each is independently available. Do not manufacture parallel actions merely to make a project look active.
 - Keep future or dependent steps as plain bullets under the project's `## Plan`.
 - Use `GTD/Waiting For.md` when another person owns the next move.
@@ -73,13 +73,19 @@ If the outcome is incomplete but no longer an active commitment, ask whether it 
 
 When promoting a plan item, remove or revise the corresponding plain bullet so the action is not duplicated.
 
-8. Create an approved reminder with:
+8. For an approved reminder, first confirm its destination list. If necessary, discover available list names with:
 
 ```sh
-gtd-reminder --title <title> --date YYYY-MM-DD
+reminders show-lists
 ```
 
-Add `--time HH:MM` only when confirmed. Remove an Obsidian action only after the command succeeds. If the command is unavailable, retain the action until the user confirms manual creation.
+The CLI requires a list and has no default-list option. Create the reminder with:
+
+```sh
+reminders add <list> <title> --due-date <date>
+```
+
+Use `YYYY-MM-DD` for a confirmed date-only reminder; it creates an all-day reminder. When the user confirms a time, pass a single date-and-time value such as `YYYY-MM-DD HH:MM` to `--due-date`. Add `--notes <text>` only when needed. Remove an Obsidian action only after the command succeeds. If `reminders` is unavailable, retain the action until the user confirms manual creation.
 
 Pass every user-provided value as a separate, shell-quoted argument. Never interpolate reminder text into an unquoted shell command.
 

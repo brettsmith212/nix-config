@@ -27,7 +27,7 @@ Use the full workflow for a weekly or general GTD review. If the user requests o
 - Ask related questions in compact batches rather than reviewing obvious items one at a time.
 - `Projects/` is the active project inventory. `GTD/Projects.md` is generated and should not be manually edited.
 - Every active project has a clear outcome and at least one incomplete action in `GTD/Next Actions.md` that links to it.
-- Available actions exist only in `GTD/Next Actions.md` under the five established context headings. Project notes contain outcomes, plans, and support, not executable checkboxes.
+- Available actions exist only in `GTD/Next Actions.md` under the six established context headings: `## On Phone`, `## At Computer`, `## At Home`, `## Errands`, `## Read / Review`, and `## At Church`. Project notes contain outcomes, plans, and support, not executable checkboxes.
 - Apple Calendar and Apple Reminders are the hard landscape. Do not keep date-bound commitments or due-date syntax in Obsidian Next Actions.
 - Future and dependent steps are plain project-plan bullets, not commitments presented as available work.
 - Aim for a trusted system, not a cosmetically empty one. Leave unclear items unchanged and state what remains unresolved.
@@ -48,6 +48,8 @@ Ask the user to review upcoming Apple Calendar and Apple Reminders items. Confir
 - reminders represent actions or follow-ups that must happen or reappear on a specific day;
 - completed or obsolete items are removed;
 - any newly discovered commitments are captured for clarification.
+
+Use the `reminders` CLI for reminder changes. Run `reminders show-lists` to discover exact list names and require the user to confirm the destination list before creating a reminder; the CLI has no default-list option. Create approved reminders with `reminders add <list> <title> --due-date <date>`, using `YYYY-MM-DD` for all-day reminders or a single `YYYY-MM-DD HH:MM` value only when the user confirms a time. Add `--notes <text>` only when needed, shell-quote every user-provided value separately, and keep the source commitment until the command succeeds.
 
 Do not move ordinary available actions onto a date merely to make them visible.
 
