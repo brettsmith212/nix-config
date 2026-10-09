@@ -84,6 +84,8 @@ sudo nix run nix-darwin -- switch --flake ~/.config/nix-config
   ```sh
   curl -fsSL https://ampcode.com/install.sh | bash
   ```
+- **Trust the llmux Codex hooks:** start Codex, run `/hooks`, and trust the
+  `llmux codex-hook` entries. Codex ignores `~/.codex/hooks.json` until you do.
 
 ### 9. Install tailscale
 

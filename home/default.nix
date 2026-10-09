@@ -4,6 +4,7 @@ let
   llmuxPkg = llmux.packages.${pkgs.system}.default;
   llmuxAmpPlugin = llmux.packages.${pkgs.system}.amp-plugin;
   llmuxOpenCodePlugin = llmux.packages.${pkgs.system}.opencode-plugin;
+  llmuxCodexPlugin = llmux.packages.${pkgs.system}.codex-plugin;
 in
 
 {
@@ -240,6 +241,12 @@ EOF
   # Amp plugin that reports session state to llmux.
   xdg.configFile."amp/plugins/llmux-state.ts" = {
     source = "${llmuxAmpPlugin}/share/amp/plugins/llmux-state.ts";
+  };
+
+  # Codex hooks that report session state to llmux. Codex skips new hooks
+  # until they are trusted once with /hooks inside Codex.
+  home.file.".codex/hooks.json" = {
+    source = "${llmuxCodexPlugin}/share/codex/hooks.json";
   };
 
   # Point npm global installs at a user-writable prefix so `npm i -g`
