@@ -57,11 +57,38 @@ rex.action{
   end,
 }
 
+-- Lazygit over the current tab, in the focused pane's directory (tmux
+-- display-popup). Opens as a zoomed split, so it fills the tab; quitting
+-- lazygit closes the pane and restores the layout. Floating layers would fit
+-- better but render transparent and clip offset bounds in this Rex beta.
+rex.action{
+  name  = "lazygit_popup",
+  title = "Lazygit Popup",
+  run   = function(ctx, args)
+    local proc = rex.block.call("com.superlogical.terminal", "process", { block_id = ctx.block_id })
+    local cwd = proc and proc.foreground and proc.foreground.cwd or (proc and proc.home)
+    local res, err = rex.session.new_split{
+      anchor_block_id = ctx.block_id,
+      direction = "horizontal",
+      side      = "after",
+      focus     = true,
+      layout    = rex.layout.block{
+        flavor  = "com.superlogical.terminal.shell",
+        options = { cwd = cwd, command = { "env", "EDITOR=nvim", "lazygit" } },
+      },
+    }
+    if err ~= nil then error(err, 0) end
+    local _, zerr = rex.session.zoom_block{ block_id = res.block_ids[1], zoom = true }
+    if zerr ~= nil then error(zerr, 0) end
+  end,
+}
+
 -- tab (tmux window) management
 bind("c", "client.tab.new")
 bind("n", "client.tab.next")
 bind("p", "client.tab.previous")
 bind("x", "close_pane_or_tab")
 bind(",", "client.tab.rename")
+bind("g", "lazygit_popup")
 bind("shift+,", "client.tab.move.backward") -- <
 bind("shift+.", "client.tab.move.forward")  -- >

@@ -173,6 +173,38 @@ in
     ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.config/opencode/skills"
   '';
 
+  # Point Claude Code's status line at the repo script, keeping the rest of
+  # the self-managed settings.json intact.
+  home.activation.claudeStatusLine = lib.hm.dag.entryAfter [ "linkSkills" ] ''
+    settings="$HOME/.claude/settings.json"
+    [ -f "$settings" ] || echo '{}' > "$settings"
+    if ! ${pkgs.jq}/bin/jq -e '.statusLine.command == "~/.config/nix-config/claude/statusline.sh"' "$settings" >/dev/null; then
+      tmp=$(mktemp)
+      ${pkgs.jq}/bin/jq '.statusLine = {type: "command", command: "~/.config/nix-config/claude/statusline.sh", padding: 0}' "$settings" > "$tmp" \
+        && cat "$tmp" > "$settings"
+      rm -f "$tmp"
+    fi
+  '';
+
+  # Codex writes ~/.codex/config.toml itself and only supports built-in status
+  # line items, so add [tui].status_line only when it is missing.
+  home.activation.codexStatusLine = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    config="$HOME/.codex/config.toml"
+    line='status_line = ["model-with-reasoning", "context-used", "five-hour-limit", "weekly-limit"]'
+    mkdir -p "$HOME/.codex"
+    touch "$config"
+    if ! grep -q '^status_line' "$config"; then
+      if grep -q '^\[tui\]$' "$config"; then
+        tmp=$(mktemp)
+        awk -v line="$line" '{ print } /^\[tui\]$/ { print line }' "$config" > "$tmp" \
+          && cat "$tmp" > "$config"
+        rm -f "$tmp"
+      else
+        printf '\n[tui]\n%s\n' "$line" >> "$config"
+      fi
+    fi
+  '';
+
   # Claude Code writes ~/.claude/settings.json itself, so instead of owning
   # the file, add Rex's SessionStart hook only when it is missing.
   home.activation.rexClaudeHook = lib.hm.dag.entryAfter [ "writeBoundary" ] (
