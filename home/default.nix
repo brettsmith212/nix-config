@@ -236,6 +236,8 @@ EOF
 
   home.file.".tmux.conf".source = ../tmux/tmux.conf;
 
+  xdg.configFile."rex/init.lua".source = ../rex/init.lua;
+
   # OpenCode plugin shim that reports session state to llmux.
   xdg.configFile."opencode/opencode.jsonc" = {
     force = true;
