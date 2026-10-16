@@ -62,5 +62,6 @@ bind("c", "client.tab.new")
 bind("n", "client.tab.next")
 bind("p", "client.tab.previous")
 bind("x", "close_pane_or_tab")
+bind(",", "client.tab.rename")
 bind("shift+,", "client.tab.move.backward") -- <
 bind("shift+.", "client.tab.move.forward")  -- >
