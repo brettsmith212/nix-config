@@ -19,3 +19,6 @@ llmux
 # Nix build result symlinks
 result
 result-*
+
+# Claude Code-managed cache of claude.ai account skills (via ~/.claude/skills symlink)
+claude/skills/synced/
