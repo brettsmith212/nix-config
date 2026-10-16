@@ -5,6 +5,16 @@ let
   llmuxAmpPlugin = llmux.packages.${pkgs.system}.amp-plugin;
   llmuxOpenCodePlugin = llmux.packages.${pkgs.system}.opencode-plugin;
   llmuxCodexPlugin = llmux.packages.${pkgs.system}.codex-plugin;
+
+  # Rex's SessionStart hook tells an agent which Rex session and terminal it
+  # runs in. Same entry `rex skill setup` installs; a no-op outside Rex.
+  rexSessionStartHook = agent: pkgs.writeText "rex-${agent}-hook.json" (builtins.toJSON {
+    hooks = [{
+      type = "command";
+      command = "/bin/sh -c 'rex __internal session-start --agent ${agent} 2>/dev/null || true'";
+      timeout = 5;
+    }];
+  });
 in
 
 {
@@ -136,6 +146,7 @@ in
       export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.opencode/bin:$PATH"
     '' + lib.optionalString pkgs.stdenv.isDarwin ''
       export VAULT_ROOT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/vault"
+      [[ -n "$REX_BIN_DIR" ]] && export PATH="$REX_BIN_DIR:$PATH"
     '';
 
     shellAliases = {
@@ -161,6 +172,22 @@ in
     ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.amp/skills"
     ln -sfn "$HOME/.config/nix-config/claude/skills" "$HOME/.config/opencode/skills"
   '';
+
+  # Claude Code writes ~/.claude/settings.json itself, so instead of owning
+  # the file, add Rex's SessionStart hook only when it is missing.
+  home.activation.rexClaudeHook = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+    lib.optionalString pkgs.stdenv.isDarwin ''
+      settings="$HOME/.claude/settings.json"
+      mkdir -p "$HOME/.claude"
+      [ -f "$settings" ] || echo '{}' > "$settings"
+      if ! ${pkgs.jq}/bin/jq -e '[.hooks.SessionStart[]?.hooks[]?.command] | any(test("rex __internal session-start"))' "$settings" >/dev/null; then
+        tmp=$(mktemp)
+        ${pkgs.jq}/bin/jq --slurpfile rex ${rexSessionStartHook "claude"} '.hooks.SessionStart += $rex' "$settings" > "$tmp" \
+          && cat "$tmp" > "$settings"
+        rm -f "$tmp"
+      fi
+    ''
+  );
 
   # Cloud images (e.g. exeuntu) ship with bash as the login shell and no
   # password set on the user, so chsh can't authenticate via PAM. Workaround:
@@ -243,10 +270,16 @@ EOF
     source = "${llmuxAmpPlugin}/share/amp/plugins/llmux-state.ts";
   };
 
-  # Codex hooks that report session state to llmux. Codex skips new hooks
-  # until they are trusted once with /hooks inside Codex.
+  # Codex hooks that report session state to llmux, plus Rex's SessionStart
+  # hook on macOS. Codex skips new hooks until they are trusted once with
+  # /hooks inside Codex.
   home.file.".codex/hooks.json" = {
-    source = "${llmuxCodexPlugin}/share/codex/hooks.json";
+    source = if pkgs.stdenv.isDarwin
+      then pkgs.runCommand "codex-hooks.json" { nativeBuildInputs = [ pkgs.jq ]; } ''
+        jq --slurpfile rex ${rexSessionStartHook "codex"} '.hooks.SessionStart += $rex' \
+          ${llmuxCodexPlugin}/share/codex/hooks.json > $out
+      ''
+      else "${llmuxCodexPlugin}/share/codex/hooks.json";
   };
 
   # Point npm global installs at a user-writable prefix so `npm i -g`
