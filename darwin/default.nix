@@ -4,6 +4,17 @@
   nix.settings.trusted-users = [ "root" "brettsmith" ];
   nix.enable = false;
 
+  # Determinate manages Nix (nix.enable = false), so nix.gc isn't available.
+  # Weekly: drop system generations older than 30 days, then collect garbage.
+  launchd.daemons.nix-gc = {
+    command = "/nix/var/nix/profiles/default/bin/nix-collect-garbage --delete-older-than 30d";
+    serviceConfig = {
+      StartCalendarInterval = [{ Weekday = 0; Hour = 3; Minute = 0; }];
+      StandardOutPath = "/var/log/nix-gc.log";
+      StandardErrorPath = "/var/log/nix-gc.log";
+    };
+  };
+
   users.users.brettsmith = {
     name = "brettsmith";
     home = "/Users/brettsmith";
