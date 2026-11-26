@@ -260,6 +260,16 @@ EOF
     recursive = true;
   };
 
+  # Ghostty's terminfo for SSH sessions from Ghostty (TERM=xterm-ghostty).
+  # Nix's ncurses (used by tmux, zsh, etc. from nixpkgs) only searches its own
+  # store path, ~/.terminfo and $TERMINFO_DIRS — not /etc/terminfo — so without
+  # this tmux fails with "missing or unsuitable terminal: xterm-ghostty".
+  # macOS doesn't need it: Ghostty.app provides the entry locally.
+  home.file.".terminfo" = lib.mkIf pkgs.stdenv.isLinux {
+    source = "${pkgs.ghostty.terminfo}/share/terminfo";
+    recursive = true;
+  };
+
   # Hammerspoon is macOS-only
   home.file.".hammerspoon" = lib.mkIf pkgs.stdenv.isDarwin {
     source = ../hammerspoon;
